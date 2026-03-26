@@ -83,14 +83,6 @@
       color: #8F8F87; display: flex; align-items: center; transition: color 0.2s;
     }
     .login-eye-btn:hover { color: #3B6B4A; }
-    .login-remember {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-bottom: 14px; cursor: pointer; font-size: 13px; color: #5C5C56;
-      user-select: none;
-    }
-    .login-remember input[type="checkbox"] {
-      width: 16px; height: 16px; accent-color: #3B6B4A; cursor: pointer;
-    }
 
     /* ── MAIN ── */
     #main-content { display: none; }
@@ -101,6 +93,59 @@
       background: var(--c-accent); padding: 0 24px;
       position: sticky; top: 0; z-index: 100;
       box-shadow: 0 2px 20px rgba(26,26,24,0.15);
+    }
+    /* ── HAMBURGER GUIDE ── */
+    .guide-menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .guide-menu-toggle span {
+      display: block;
+      width: 22px; height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+    .guide-menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .guide-menu-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .guide-menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    /* ── MENU MOBILE GUIDE ── */
+    .guide-mobile-menu {
+      display: none;
+      position: fixed;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      background: #1a2d22;
+      flex-direction: column;
+      padding: 20px 24px 32px;
+      z-index: 99;
+      overflow-y: auto;
+    }
+    .guide-mobile-menu.open { display: flex; }
+    .guide-mobile-menu a {
+      padding: 15px 0;
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: color 0.2s, padding-left 0.2s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .guide-mobile-menu a:hover { color: white; padding-left: 6px; }
+    .guide-mobile-menu-title {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      padding: 16px 0 8px;
     }
     .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
     .header-logo { height: 40px; width: auto; }
@@ -281,8 +326,9 @@
     @media (max-width: 768px) {
       /* Header */
       .header-inner { height: 56px; }
-      .header-logo { height: 32px; }
-      .header-badge { font-size: 10px; padding: 4px 10px; }
+      .header-logo { height: 30px; }
+      .header-badge { display: none; }
+      .guide-menu-toggle { display: flex; }
 
       /* Hero */
       .guide-hero { padding: 52px 20px 44px; }
@@ -293,14 +339,7 @@
       .guide-stat-val { font-size: 26px; }
 
       /* Sommaire — scroll horizontal sur mobile */
-      .sommaire-section {
-        position: relative; top: 0;
-        overflow-x: auto; -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      .sommaire-section::-webkit-scrollbar { display: none; }
-      .sommaire-inner { flex-wrap: nowrap; width: max-content; }
-      .sommaire-btn { font-size: 10px; padding: 12px 12px; }
+      .sommaire-section { display: none; }
 
       /* Contenu principal */
       .guide-main { padding: 32px 16px; }
@@ -342,6 +381,71 @@
       .reps-row { gap: 6px; }
       .reps-b { font-size: 9px; padding: 3px 8px; }
     }
+
+    /* ── BOUTON FLOTTANT SOMMAIRE (mobile uniquement) ── */
+    .fab-sommaire {
+      display: none;
+      position: fixed;
+      bottom: 24px; right: 20px;
+      width: 52px; height: 52px;
+      background: var(--c-accent);
+      border-radius: 50%;
+      border: none; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      z-index: 200;
+      align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .fab-sommaire:hover { transform: scale(1.08); background: #2d5239; }
+    .fab-sommaire.open { background: #2d5239; transform: rotate(45deg); }
+
+    /* ── PANNEAU SOMMAIRE MOBILE ── */
+    .fab-panel {
+      display: none;
+      position: fixed;
+      bottom: 88px; right: 16px;
+      width: 240px;
+      background: #1a2d22;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+      z-index: 199;
+      overflow: hidden;
+      transform: scale(0.9) translateY(10px);
+      transform-origin: bottom right;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .fab-panel.open {
+      display: block;
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    .fab-panel-title {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      padding: 14px 16px 8px;
+    }
+    .fab-panel a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 16px;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.15s, color 0.15s;
+    }
+    .fab-panel a:hover { background: rgba(255,255,255,0.06); color: white; }
+    .fab-panel a.active { color: #7FD99A; }
+    .fab-panel-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); flex-shrink: 0;
+    }
+    .fab-panel a.active .fab-panel-dot { background: #7FD99A; }
+
+    @media (max-width: 768px) {
+      .fab-sommaire { display: flex; }
+    }
   </style>
 </head>
 <body>
@@ -361,10 +465,6 @@
         <svg id="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
       </button>
     </div>
-    <label class="login-remember">
-      <input type="checkbox" id="remember-me">
-      Retenir le code sur cet appareil
-    </label>
     <button class="login-btn" onclick="checkPassword()">Accéder au guide</button>
     <p class="login-error" id="login-error">❌ Code incorrect. Vérifiez votre kit.</p>
     <p class="login-note">🔒 Contenu exclusif réservé aux clients MOVIFLEX</p>
@@ -377,8 +477,25 @@
     <div class="header-inner">
       <img src="https://moviflex-sketch.github.io/moviflex-assets/images/logo-blanc.png" alt="MOVIFLEX" class="header-logo" />
       <div class="header-badge"><span></span>Guide exclusif clients</div>
+      <button class="guide-menu-toggle" id="guideMenuToggle" onclick="toggleGuideMenu()" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
+
+  <!-- Menu mobile guide -->
+  <div class="guide-mobile-menu" id="guideMobileMenu">
+    <div class="guide-mobile-menu-title">Navigation</div>
+    <a href="#epaules" onclick="navigateGuide('epaules');return false;">💪 Épaules / Trapèzes</a>
+    <a href="#dos" onclick="navigateGuide('dos');return false;">🔙 Dos</a>
+    <a href="#pectoraux" onclick="navigateGuide('pectoraux');return false;">🏋️ Pectoraux</a>
+    <a href="#bras" onclick="navigateGuide('bras');return false;">💪 Bras</a>
+    <a href="#abdominaux" onclick="navigateGuide('abdominaux');return false;">⚡ Abdominaux</a>
+    <a href="#membres" onclick="navigateGuide('membres');return false;">🦵 Membres inférieurs</a>
+    <a href="#conseils" onclick="navigateGuide('conseils');return false;">👨‍⚕️ Conseils du kiné</a>
+    <a href="#pro" onclick="navigateGuide('pro');return false;">⭐ MOVIFLEX PRO+</a>
+    <a href="#contact" onclick="navigateGuide('contact');return false;">✉️ Contact</a>
+  </div>
 
   <div class="guide-hero">
     <div class="guide-hero-inner">
@@ -895,9 +1012,9 @@
       <h3>Une question ? Contactez-nous</h3>
       <p>Notre équipe est disponible pour répondre à toutes vos questions sur le kit et les exercices.</p>
       <div class="contact-btns">
-        <a href="/cdn-cgi/l/email-protection#02616d6c76636176426f6d746b646e677a33312c616d6f" class="contact-btn contact-btn-email">
+        <a href="mailto:contact@moviflex13.com" class="contact-btn contact-btn-email">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span class="__cf_email__" data-cfemail="2d4e4243594c4e596d40425b444b4148551c1e034e4240">[email&#160;protected]</span>
+          contact@moviflex13.com
         </a>
         <a href="https://www.instagram.com/moviflexbykine/" target="_blank" rel="noopener" class="contact-btn contact-btn-ig">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="white"/></svg>
@@ -922,8 +1039,30 @@
 
   </footer>
 
+  <!-- ── BOUTON FLOTTANT SOMMAIRE ── -->
+  <button class="fab-sommaire" id="fabSommaire" onclick="toggleFabPanel()" aria-label="Navigation exercices">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <div class="fab-panel" id="fabPanel">
+    <div class="fab-panel-title">Aller à une section</div>
+    <a href="#epaules" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Épaules / Trapèzes</a>
+    <a href="#dos" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Dos</a>
+    <a href="#pectoraux" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Pectoraux</a>
+    <a href="#bras" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Bras</a>
+    <a href="#abdominaux" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Abdominaux</a>
+    <a href="#membres" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Membres inférieurs</a>
+    <a href="#conseils" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Conseils du kiné</a>
+    <a href="#pro" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>MOVIFLEX PRO+</a>
+    <a href="#contact" onclick="closeFabPanel()"><span class="fab-panel-dot"></span>Contact</a>
+  </div>
+
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+<script>
   function togglePwd() {
     var inp = document.getElementById('password-input');
     var on  = document.getElementById('eye-on');
@@ -936,34 +1075,88 @@
   }
 
   var PASSWORD = 'Moviflex2026';
+
   function checkPassword() {
     var inp   = document.getElementById('password-input');
     var error = document.getElementById('login-error');
     if (inp.value === PASSWORD) {
-      var cb = document.getElementById('remember-me');
-      if (cb && cb.checked) {
-        document.cookie = 'mvfx_auth=1; max-age=2592000; path=/';
-      }
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('main-content').style.display = 'block';
     } else {
       error.style.display = 'block';
       inp.style.borderColor = '#e05555';
-      setTimeout(function() { error.style.display='none'; inp.style.borderColor=''; }, 3000);
+      setTimeout(function() { error.style.display = 'none'; inp.style.borderColor = ''; }, 3000);
     }
   }
 
-  window.addEventListener('DOMContentLoaded', function() {
-    var cb = document.getElementById('remember-me');
-    if (document.cookie.indexOf('mvfx_auth=1') !== -1) {
-      if (cb) cb.checked = true;
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('main-content').style.display = 'block';
+  // ── Menu mobile guide
+  function toggleGuideMenu() {
+    var m   = document.getElementById('guideMobileMenu');
+    var btn = document.getElementById('guideMenuToggle');
+    var isOpen = m.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  function closeGuideMenu() {
+    var m   = document.getElementById('guideMobileMenu');
+    var btn = document.getElementById('guideMenuToggle');
+    if (m) m.classList.remove('open');
+    if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+    document.body.style.overflow = '';
+  }
+
+  function navigateGuide(sectionId) {
+    // 1. Fermer le menu et rétablir le scroll immédiatement
+    var m   = document.getElementById('guideMobileMenu');
+    var btn = document.getElementById('guideMenuToggle');
+    if (m) m.classList.remove('open');
+    if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    // 2. Scroller après que le menu soit bien fermé
+    setTimeout(function() {
+      var target = document.getElementById(sectionId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
+  }
+
+  // ── FAB Sommaire
+  function toggleFabPanel() {
+    var panel = document.getElementById('fabPanel');
+    var btn   = document.getElementById('fabSommaire');
+    var isOpen = panel.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+  }
+  function closeFabPanel() {
+    document.getElementById('fabPanel').classList.remove('open');
+    document.getElementById('fabSommaire').classList.remove('open');
+  }
+  // Fermer si clic extérieur
+  document.addEventListener('click', function(e) {
+    var panel = document.getElementById('fabPanel');
+    var btn   = document.getElementById('fabSommaire');
+    if (panel && panel.classList.contains('open')) {
+      if (!panel.contains(e.target) && !btn.contains(e.target)) {
+        closeFabPanel();
+      }
     }
   });
 
+  // Highlight section active dans le FAB
   var sections = document.querySelectorAll('.group-section, .special-section, .contact-section');
-  var btns = document.querySelectorAll('.sommaire-btn');
+  var fabLinks = document.querySelectorAll('.fab-panel a');
   window.addEventListener('scroll', function() {
     var cur = '';
-    sections.forE
+    sections.forEach(function(s) {
+      if (window.scrollY >= s.offsetTop - 160) cur = s.id;
+    });
+    fabLinks.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>
