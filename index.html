@@ -1562,9 +1562,9 @@
       <p>MOKHTARI Sofiane</p>
 
       <h3>Hébergement</h3>
-      <p>Hébergeur : <strong>OVH SAS</strong><br>
-      Adresse : 2 rue Kellermann, 59100 Roubaix, France<br>
-      Site : <a href="https://www.ovh.com" target="_blank" rel="noopener">www.ovh.com</a></p>
+      <p>Hébergeur : <strong>Netlify, Inc.</strong><br>
+      Adresse : 44 Montgomery Street, Suite 300, San Francisco, CA 94104, États-Unis<br>
+      Site : <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a></p>
 
       <h3>Propriété intellectuelle</h3>
       <p>L'ensemble du contenu de ce site (textes, images, visuels, logos) est la propriété exclusive de MOVIFLEX. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
@@ -1622,7 +1622,7 @@
       <p>Pour exercer ces droits, contactez-nous à : <a href="mailto:contact@moviflex13.com">contact@moviflex13.com</a>. Nous nous engageons à répondre dans un délai d'un mois.</p>
 
       <h3>Hébergement des données</h3>
-      <p>Les données techniques du site sont hébergées par <strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France — dans le respect de la réglementation européenne.</p>
+      <p>Les données techniques du site sont hébergées par <strong>Netlify, Inc.</strong>, 44 Montgomery Street, Suite 300, San Francisco, CA 94104, États-Unis — dans le respect de la réglementation européenne (RGPD).</p>
 
       <h3>Réclamation</h3>
       <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a></p>
@@ -2394,7 +2394,6 @@
       btn.style.background = ''; btn.disabled = false; e.target.reset();
     }, 3000);
   }
-
   function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
   document.querySelectorAll('.modal-overlay').forEach(function(o) {
@@ -2403,16 +2402,12 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(function(m) { closeModal(m.id); });
   });
-
   var header = document.getElementById('header');
   window.addEventListener('scroll', function() { header.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
-
   function toggleMenu() {
-    var m = document.getElementById('mobileMenu');
-    var btn = document.querySelector('.menu-toggle');
+    var m = document.getElementById('mobileMenu'), btn = document.querySelector('.menu-toggle');
     var isOpen = m.classList.toggle('open');
-    btn.classList.toggle('open', isOpen);
-    btn.setAttribute('aria-expanded', isOpen);
+    btn.classList.toggle('open', isOpen); btn.setAttribute('aria-expanded', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
   function closeMenu() {
@@ -2421,49 +2416,36 @@
     if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
     document.body.style.overflow = '';
   }
-
   function toggleFaq(el) {
-    var item = el.parentElement;
-    var isOpen = item.classList.contains('open');
+    var item = el.parentElement, isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item.open').forEach(function(i) {
-      i.classList.remove('open');
-      i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      i.classList.remove('open'); i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
     });
     if (!isOpen) { item.classList.add('open'); el.setAttribute('aria-expanded', 'true'); }
   }
   document.querySelectorAll('.faq-question').forEach(function(q) {
-    q.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFaq(q); }
-    });
+    q.addEventListener('keydown', function(e) { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleFaq(q); } });
   });
-
   var revealObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
-    });
+    entries.forEach(function(entry) { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
-
-  var GUIDE_CODE = 'Moviflex2026';
-  var GUIDE_URL  = 'guide-moviflex.html';
-
+  var GUIDE_CODE = 'Moviflex2026', GUIDE_URL = 'guide-moviflex.html';
   function toggleGuidePwd() {
     var inp = document.getElementById('guide-code-input');
-    var on  = document.getElementById('guide-eye-on');
-    var off = document.getElementById('guide-eye-off');
-    if (inp.type === 'password') { inp.type = 'text'; on.style.display = 'none'; off.style.display = 'block'; }
-    else { inp.type = 'password'; on.style.display = 'block'; off.style.display = 'none'; }
+    var on = document.getElementById('guide-eye-on'), off = document.getElementById('guide-eye-off');
+    if (inp.type==='password') { inp.type='text'; on.style.display='none'; off.style.display='block'; }
+    else { inp.type='password'; on.style.display='block'; off.style.display='none'; }
   }
-
   function submitGuideCode() {
-    var inp   = document.getElementById('guide-code-input');
+    var inp = document.getElementById('guide-code-input');
     var error = document.getElementById('guide-access-error');
     if (inp.value.trim() === GUIDE_CODE) {
       var btn = document.querySelector('#modal-guide-access .guide-access-btn');
       btn.innerHTML = '✓ Accès accordé...'; btn.style.background = '#2d5239';
       setTimeout(function() {
-        closeModal('modal-guide-access');
-        inp.value = ''; btn.innerHTML = 'Accéder au guide'; btn.style.background = '';
+        closeModal('modal-guide-access'); inp.value = '';
+        btn.innerHTML = 'Accéder au guide'; btn.style.background = '';
         window.location.href = GUIDE_URL + '?access=granted';
       }, 600);
     } else {
