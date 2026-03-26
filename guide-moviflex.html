@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOVIFLEX – Guide d'exercices vidéo</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c-bg: #F2EFE9;
+      --c-dark: #1A1A18;
+      --c-charcoal: #2D2D2A;
+      --c-mid: #5C5C56;
+      --c-muted: #8F8F87;
+      --c-accent: #3B6B4A;
+      --c-accent-light: #6AAF82;
+      --c-accent-glow: rgba(59,107,74,0.10);
+      --c-white: #FDFCFA;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius: 16px;
+      --shadow: 0 2px 20px rgba(26,26,24,0.07);
+      --shadow-lg: 0 12px 48px rgba(26,26,24,0.11);
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--c-bg);
+      color: var(--c-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(145deg, #111110 0%, #1e3028 100%);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; padding: 24px;
+    }
+    #login-screen.hidden { display: none; }
+    .login-box {
+      background: var(--c-white); border-radius: 24px;
+      padding: 52px 44px; max-width: 420px; width: 100%;
+      text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.35);
+      position: relative; overflow: hidden;
+    }
+    .login-box::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--c-accent), var(--c-accent-light));
+    }
+    .login-logo { height: 52px; width: auto; margin: 0 auto 28px; display: block; }
+    .login-title { font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--c-dark); margin-bottom: 6px; }
+    .login-subtitle { font-size: 14px; color: var(--c-muted); margin-bottom: 32px; line-height: 1.6; }
+    .login-input {
+      width: 100%; padding: 14px 18px;
+      border: 1.5px solid rgba(26,26,24,0.12); border-radius: 10px;
+      font-family: var(--font-body); font-size: 15px; color: var(--c-dark);
+      background: var(--c-bg); outline: none; margin-bottom: 14px;
+      transition: border-color 0.2s; text-align: center; letter-spacing: 0.08em;
+    }
+    .login-input:focus { border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-glow); }
+    .login-btn {
+      width: 100%; padding: 15px; background: var(--c-accent); color: white;
+      border: none; border-radius: 10px;
+      font-family: var(--font-body); font-size: 15px; font-weight: 500;
+      cursor: pointer; transition: var(--transition);
+    }
+    .login-btn:hover { background: #2d5239; transform: translateY(-1px); }
+    .login-error { color: #e05555; font-size: 13px; margin-top: 10px; display: none; }
+    .login-note { font-size: 12px; color: var(--c-muted); margin-top: 20px; }
+    .login-input-wrap { position: relative; margin-bottom: 14px; }
+    .login-input-wrap .login-input { margin-bottom: 0 !important; padding-right: 48px; }
+    .login-eye-btn {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: #8F8F87; display: flex; align-items: center; transition: color 0.2s;
+    }
+    .login-eye-btn:hover { color: #3B6B4A; }
+    .login-remember {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-bottom: 14px; cursor: pointer; font-size: 13px; color: #5C5C56;
+      user-select: none;
+    }
+    .login-remember input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: #3B6B4A; cursor: pointer;
+    }
+
+    /* ── MAIN ── */
+    #main-content { display: none; }
+    
+
+    /* ── HEADER ── */
+    header {
+      background: var(--c-accent); padding: 0 24px;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 20px rgba(26,26,24,0.15);
+    }
+    .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .header-logo { height: 40px; width: auto; }
+    .header-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.95);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .header-badge span { width: 6px; height: 6px; background: #7FD99A; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* ── HERO ── */
+    .guide-hero {
+      background: linear-gradient(160deg, #111110 0%, #1a2d22 50%, #2d3d32 100%);
+      padding: 80px 24px 68px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .guide-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(59,107,74,0.22) 0%, transparent 65%);
+    }
+    .guide-hero-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+    .guide-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px,5vw,64px); font-weight: 300;
+      color: white; line-height: 1.1; margin-bottom: 16px;
+    }
+    .guide-hero h1 em { font-style: italic; color: var(--c-accent-light); }
+    .guide-hero p { font-size: 16px; color: rgba(255,255,255,0.55); max-width: 480px; margin: 0 auto 44px; line-height: 1.7; }
+    .guide-stats { display: flex; justify-content: center; gap: 0; max-width: 460px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.04); overflow: hidden; }
+    .guide-stat { flex: 1; padding: 20px 16px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08); }
+    .guide-stat:last-child { border-right: none; }
+    .guide-stat-val { font-family: var(--font-display); font-size: 32px; font-weight: 300; color: white; line-height: 1; display: block; }
+    .guide-stat-lbl { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; display: block; }
+
+    /* ── SOMMAIRE ── */
+    .sommaire-section {
+      background: var(--c-white); border-bottom: 1px solid rgba(26,26,24,0.07);
+      padding: 0 24px; position: sticky; top: 64px; z-index: 90;
+      box-shadow: 0 2px 16px rgba(26,26,24,0.05);
+    }
+    .sommaire-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; }
+    .sommaire-btn {
+      display: flex; align-items: center; gap: 6px; padding: 14px 15px;
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-muted);
+      cursor: pointer; transition: all 0.2s; text-decoration: none; white-space: nowrap;
+    }
+    .sommaire-btn:hover { color: var(--c-dark); border-bottom-color: rgba(26,26,24,0.15); }
+    .sommaire-btn.active { color: var(--c-accent); border-bottom-color: var(--c-accent); }
+    .sommaire-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.5; }
+    .sommaire-btn.active .sommaire-dot { opacity: 1; }
+
+    /* ── CONTENT ── */
+    .guide-main { max-width: 1100px; margin: 0 auto; padding: 72px 24px; }
+
+    /* ── GROUP ── */
+    .group-section { margin-bottom: 96px; scroll-margin-top: 136px; }
+    .group-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 36px; padding-bottom: 14px;
+      border-bottom: 1.5px solid rgba(26,26,24,0.1);
+    }
+    .group-title { font-family: var(--font-display); font-size: clamp(26px,2.5vw,36px); font-weight: 600; color: var(--c-dark); }
+    .group-count { background: var(--c-accent-glow); color: var(--c-accent); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(59,107,74,0.2); }
+
+    /* ── EXERCISE CARD ── */
+    .exercise-card {
+      background: var(--c-white); border-radius: var(--radius);
+      border: 1px solid rgba(26,26,24,0.06); overflow: hidden;
+      box-shadow: var(--shadow); transition: var(--transition);
+    }
+    .exercise-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .exercise-sep { height: 1px; background: linear-gradient(90deg, transparent, rgba(59,107,74,0.12), transparent); margin: 28px 0; }
+    .ex-layout { display: grid; grid-template-columns: 400px 1fr; min-height: 260px; }
+
+    /* VIDEO */
+    .ex-video {
+      position: relative; overflow: hidden;
+      background: #0a1510; cursor: pointer;
+    }
+    .ex-video img { width: 100%; height: 100%; object-fit: cover; opacity: 0.82; transition: opacity 0.4s, transform 0.5s; display: block; }
+    .ex-video:hover img { opacity: 1; transform: scale(1.04); }
+    .ex-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.32) 100%);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s;
+    }
+    .ex-video:hover .ex-overlay { background: rgba(0,0,0,0.1); }
+    .ex-play {
+      width: 56px; height: 56px; background: rgba(255,255,255,0.92);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3); transition: var(--transition);
+    }
+    .ex-play svg { margin-left: 4px; }
+    .ex-video:hover .ex-play { background: white; transform: scale(1.1); }
+
+    /* INFO */
+    .ex-info { display: flex; flex-direction: column; }
+    .ex-head {
+      padding: 20px 28px 16px;
+      background: linear-gradient(135deg, #eef5f0 0%, #e6f0ea 100%);
+      border-bottom: 1px solid rgba(59,107,74,0.1);
+    }
+    .ex-name { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--c-dark); line-height: 1.2; }
+    .ex-body { padding: 18px 28px; flex: 1; display: flex; flex-direction: column; gap: 14px; }
+    .ex-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .ex-detail-lbl {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--c-accent); margin-bottom: 4px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .ex-detail-lbl::before { content: ''; width: 10px; height: 1.5px; background: var(--c-accent); display: inline-block; }
+    .ex-detail-txt { font-size: 13px; color: var(--c-mid); line-height: 1.65; }
+    .ex-full { grid-column: 1 / -1; }
+    .ex-reps {
+      padding: 14px 28px 18px; border-top: 1px solid rgba(26,26,24,0.06);
+      background: #f8f8f5;
+    }
+    .reps-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 10px; }
+    .reps-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .reps-b { padding: 5px 13px; border-radius: 100px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
+    .rb-d { background: rgba(59,107,74,0.08); color: var(--c-accent); border-color: rgba(59,107,74,0.15); }
+    .rb-i { background: rgba(196,169,109,0.10); color: #8B6914; border-color: rgba(196,169,109,0.2); }
+    .rb-a { background: rgba(26,26,24,0.05); color: var(--c-charcoal); border-color: rgba(26,26,24,0.12); }
+
+    @media (max-width: 900px) {
+      .ex-layout { grid-template-columns: 1fr; }
+      .ex-video { aspect-ratio: 16/9; height: auto; }
+      .ex-row { grid-template-columns: 1fr; }
+      .pro-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── SPECIAL SECTIONS ── */
+    .special-section {
+      background: var(--c-white); border-radius: var(--radius); padding: 40px;
+      border: 1px solid rgba(26,26,24,0.06); margin-bottom: 72px;
+      scroll-margin-top: 136px; box-shadow: var(--shadow);
+    }
+    .special-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1.5px solid rgba(26,26,24,0.1); }
+    .special-title { font-family: var(--font-display); font-size: 30px; font-weight: 600; color: var(--c-dark); }
+    .conseil-block { margin-bottom: 14px; padding: 18px 22px; background: var(--c-bg); border-radius: 10px; border-left: 3px solid var(--c-accent); }
+    .conseil-block h4 { font-size: 14px; font-weight: 600; color: var(--c-dark); margin-bottom: 6px; }
+    .conseil-block p { font-size: 13px; color: var(--c-mid); line-height: 1.75; }
+    .pro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .pro-card { background: linear-gradient(145deg, #1a2a20, #2d3d32); border-radius: 12px; padding: 24px; border: 1px solid rgba(106,175,130,0.1); }
+    .pro-card h4 { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: white; margin-bottom: 8px; }
+    .pro-card p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+    .pro-tag { display: inline-block; background: var(--c-accent); color: white; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-bottom: 10px; }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      background: linear-gradient(145deg, #111110, #1a2a20); border-radius: var(--radius);
+      padding: 52px 40px; text-align: center; margin-bottom: 72px;
+      scroll-margin-top: 136px; border: 1px solid rgba(106,175,130,0.1); box-shadow: var(--shadow-lg);
+    }
+    .contact-section h3 { font-family: var(--font-display); font-size: 32px; font-weight: 300; color: white; margin-bottom: 10px; }
+    .contact-section p { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+    .contact-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .contact-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 10px; font-family: var(--font-body); font-size: 14px; font-weight: 500; text-decoration: none; transition: var(--transition); }
+    .contact-btn-email { background: var(--c-accent); color: white; }
+    .contact-btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; border: none; }
+    .contact-btn-tt { background: #010101; color: white; border: 1px solid #333; }
+    .contact-btn-tt svg { color: white; }
+    .contact-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+    /* ── FOOTER ── */
+    .guide-footer { background: #0e0e0d; padding: 36px 24px; text-align: center; }
+    .guide-footer img { height: 36px; width: auto; margin: 0 auto 14px; display: block; }
+    .guide-footer p { font-size: 12px; color: rgba(255,255,255,0.25); }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.4); font-size: 13px; text-decoration: none; margin-top: 14px; transition: color 0.2s; }
+    .back-link:hover { color: var(--c-accent-light); }
+
+    @media (max-width: 768px) {
+      /* Header */
+      .header-inner { height: 56px; }
+      .header-logo { height: 32px; }
+      .header-badge { font-size: 10px; padding: 4px 10px; }
+
+      /* Hero */
+      .guide-hero { padding: 52px 20px 44px; }
+      .guide-hero h1 { font-size: 36px; }
+      .guide-hero p { font-size: 14px; margin-bottom: 32px; }
+      .guide-stats { max-width: 100%; }
+      .guide-stat { padding: 14px 10px; }
+      .guide-stat-val { font-size: 26px; }
+
+      /* Sommaire — scroll horizontal sur mobile */
+      .sommaire-section {
+        position: relative; top: 0;
+        overflow-x: auto; -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .sommaire-section::-webkit-scrollbar { display: none; }
+      .sommaire-inner { flex-wrap: nowrap; width: max-content; }
+      .sommaire-btn { font-size: 10px; padding: 12px 12px; }
+
+      /* Contenu principal */
+      .guide-main { padding: 32px 16px; }
+      .group-section { margin-bottom: 56px; }
+      .group-header { margin-bottom: 24px; }
+
+      /* Cartes exercices */
+      .ex-head { padding: 16px 18px 12px; }
+      .ex-name { font-size: 18px; }
+      .ex-body { padding: 14px 18px; gap: 12px; }
+      .ex-reps { padding: 12px 18px 14px; }
+      .reps-b { font-size: 10px; padding: 4px 10px; }
+
+      /* Sections spéciales */
+      .special-section { padding: 24px 18px; margin-bottom: 40px; }
+      .special-title { font-size: 24px; }
+      .conseil-block { padding: 14px 16px; }
+
+      /* Contact */
+      .contact-section { padding: 32px 20px; margin-bottom: 40px; }
+      .contact-section h3 { font-size: 26px; }
+      .contact-btns { flex-direction: column; align-items: stretch; gap: 10px; }
+      .contact-btn { justify-content: center; padding: 14px 20px; font-size: 14px; }
+
+      /* Footer */
+      .guide-footer { padding: 28px 20px; }
+    }
+
+    @media (max-width: 420px) {
+      .guide-hero h1 { font-size: 30px; }
+      .guide-stats { border-radius: 10px; }
+      .guide-stat-val { font-size: 22px; }
+      .guide-stat-lbl { font-size: 9px; }
+      .ex-name { font-size: 16px; }
+      .special-section { padding: 20px 14px; }
+      .conseil-block { padding: 12px 14px; }
+      .conseil-block h4 { font-size: 13px; }
+      .conseil-block p { font-size: 12px; }
+      .reps-row { gap: 6px; }
+      .reps-b { font-size: 9px; padding: 3px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <img src="https://moviflex-sketch.github.io/moviflex-assets/images/logo-moviflex.png" alt="MOVIFLEX" class="login-logo" />
+    <h2 class="login-title">Accès Guide Vidéo</h2>
+    <p class="login-subtitle">Entrez le code d'accès inclus dans votre kit MOVIFLEX</p>
+    <div class="login-input-wrap">
+      <input type="password" class="login-input" id="password-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkPassword()" autocomplete="off" />
+      <button class="login-eye-btn" type="button" onclick="togglePwd()" tabindex="-1" aria-label="Voir le mot de passe">
+        <svg id="eye-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg id="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </button>
+    </div>
+    <label class="login-remember">
+      <input type="checkbox" id="remember-me">
+      Retenir le code sur cet appareil
+    </label>
+    <button class="login-btn" onclick="checkPassword()">Accéder au guide</button>
+    <p class="login-error" id="login-error">❌ Code incorrect. Vérifiez votre kit.</p>
+    <p class="login-note">🔒 Contenu exclusif réservé aux clients MOVIFLEX</p>
+  </div>
+</div>
+
+<div id="main-content">
+
+  <header>
+    <div class="header-inner">
+      <img src="https://moviflex-sketch.github.io/moviflex-assets/images/logo-blanc.png" alt="MOVIFLEX" class="header-logo" />
+      <div class="header-badge"><span></span>Guide exclusif clients</div>
+    </div>
+  </header>
+
+  <div class="guide-hero">
+    <div class="guide-hero-inner">
+      <h1>Guide d'exercices <em>vidéo</em></h1>
+      <p>Tous vos exercices guidés par Sofiane Mokhtari, kinésithérapeute et fondateur de MOVIFLEX.</p>
+      <div class="guide-stats">
+        <div class="guide-stat"><span class="guide-stat-val">22</span><span class="guide-stat-lbl">Vidéos disponibles</span></div>
+        <div class="guide-stat"><span class="guide-stat-val">✓</span><span class="guide-stat-lbl">Adapté à tous niveaux</span></div>
+        <div class="guide-stat"><span class="guide-stat-val">∞</span><span class="guide-stat-lbl">Accès illimité</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sommaire-section">
+    <div class="sommaire-inner">
+      <a href="#epaules" class="sommaire-btn"><span class="sommaire-dot"></span>Épaules / Trapèzes</a>
+      <a href="#dos" class="sommaire-btn"><span class="sommaire-dot"></span>Dos</a>
+      <a href="#pectoraux" class="sommaire-btn"><span class="sommaire-dot"></span>Pectoraux</a>
+      <a href="#bras" class="sommaire-btn"><span class="sommaire-dot"></span>Bras</a>
+      <a href="#abdominaux" class="sommaire-btn"><span class="sommaire-dot"></span>Abdominaux</a>
+      <a href="#membres" class="sommaire-btn"><span class="sommaire-dot"></span>Membres inférieurs</a>
+      <a href="#conseils" class="sommaire-btn"><span class="sommaire-dot"></span>Conseils du kiné</a>
+      <a href="#pro" class="sommaire-btn"><span class="sommaire-dot"></span>MOVIFLEX PRO+</a>
+      <a href="#contact" class="sommaire-btn"><span class="sommaire-dot"></span>Contact</a>
+    </div>
+  </div>
+
+  <div class="guide-main">
+
+    <div class="group-section" id="epaules">
+      <div class="group-header"><div class="group-title">ÉPAULES / TRAPÈZES</div><div class="group-count">5 exercices</div></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=2xWy4fyTw5k" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/2xWy4fyTw5k/maxresdefault.jpg" alt="Band Pull-Apart (Écarté d'élastique)" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Band Pull-Apart (Écarté d'élastique)</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Deltoïdes postérieurs, trapèzes moyens, rhomboïdes</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en écartant, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Tiens l'élastique bras tendus devant toi, largeur d'épaules. Écarte lentement les bras en gardant les coudes tendus.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10–12</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=3km9jyrVXH0" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/3km9jyrVXH0/maxresdefault.jpg" alt="Rotation externe épaule" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Rotation externe épaule</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Infra-épineux, petit rond, deltoïde postérieur</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en tournant vers l'extérieur, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Fixe l'élastique à hauteur du coude. Coude collé au corps, fléchi à 90°, avant-bras parallèle au sol. Effectue une rotation vers l'extérieur sans décoller le coude du tronc.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10–12</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=Ks4ztHEh9cs" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/Ks4ztHEh9cs/maxresdefault.jpg" alt="Face Pull (Tirage front)" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Face Pull (Tirage front)</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Deltoïdes postérieurs, trapèzes supérieurs et moyens</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en tirant, expire au retour.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Fixe l'élastique à hauteur du visage et tire les mains vers le front, coudes écartés.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8–10</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=lqZ-CWs-LSA" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/lqZ-CWs-LSA/maxresdefault.jpg" alt="Tirage menton" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Tirage menton</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Deltoïdes latéraux, trapèzes supérieurs, élévateur de la scapula</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en tirant vers le haut, expire en redescendant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Debout, pieds écartés largeur de hanches, maintiens l'élastique sous les pieds. Tire les mains vers le menton en gardant les coudes plus hauts que les poignets. Monte jusqu'à hauteur du menton puis redescends de façon contrôlée.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8–10</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=_Tcm5qy1kDM" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/_Tcm5qy1kDM/maxresdefault.jpg" alt="Développé militaire" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Développé militaire</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Deltoïde antérieur et moyen, triceps, trapèzes supérieurs, gainage</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en poussant vers le haut, expire en redescendant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place l'élastique sous les pieds, largeur de hanches. Saisis la bande à hauteur d'épaules, coudes fléchis. Pousse les bras vers le haut jusqu'à extension complète, sans cambrer le bas du dos. Redescends lentement.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8–10</span><span class="reps-b rb-i">Intermédiaire : 3 × 10–12</span><span class="reps-b rb-a">Avancé : 4 × 12–15</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="group-section" id="dos">
+      <div class="group-header"><div class="group-title">DOS</div><div class="group-count">3 exercices</div></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=u8W1UTnfR4o" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/u8W1UTnfR4o/maxresdefault.jpg" alt="Rowing assis" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Rowing assis</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Grand dorsal, rhomboïdes, trapèzes, biceps</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en tirant, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Assieds-toi au sol, jambes tendues, élastique sous les pieds. Tire les coudes en arrière, proches du corps.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10–12</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=7kcpl_KRKAY" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/7kcpl_KRKAY/maxresdefault.jpg" alt="Tirage bûcheron" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Tirage bûcheron</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Grand dorsal, rhomboïdes, trapèzes moyens, biceps</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en tirant le coude vers l'arrière, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place un pied sur l'élastique pour le stabiliser. Penche le buste en avant, dos droit, genoux légèrement fléchis. Tire les coudes vers l'arrière en les gardant proches du corps, puis redescends lentement.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8–10</span><span class="reps-b rb-i">Intermédiaire : 3 × 10–12</span><span class="reps-b rb-a">Avancé : 4 × 12–15</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=sUCZEM9vxqk" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/sUCZEM9vxqk/maxresdefault.jpg" alt="Tractions assistées" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Tractions assistées</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Grand dorsal, biceps, rhomboïdes, trapèzes moyens et inférieurs</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en tirant vers le haut, expire en redescendant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Fixe l'élastique en hauteur sur une barre de traction. Place un genou dans la bande pour l'assistance. Saisis la barre en pronation, engage les omoplates puis tire la poitrine vers la barre. Redescends lentement.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 5–8</span><span class="reps-b rb-i">Intermédiaire : 3 × 8–10</span><span class="reps-b rb-a">Avancé : 4 × 10–12</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="group-section" id="pectoraux">
+      <div class="group-header"><div class="group-title">PECTORAUX</div><div class="group-count">2 exercices</div></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=1TAfsmxyFbU" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/1TAfsmxyFbU/maxresdefault.jpg" alt="Développé couché simulé" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Développé couché simulé</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Pectoraux, triceps, deltoïdes antérieurs</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en poussant, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Fixe l'élastique derrière toi, pousse les bras devant comme au développé couché.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8–10</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=AST8OzZtK4Y" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/AST8OzZtK4Y/maxresdefault.jpg" alt="Pompes assistées" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Pompes assistées</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Grand pectoral, triceps, deltoïde antérieur, gainage</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en descendant, expire en poussant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place l'élastique dans le dos et maintiens les extrémités sous les mains. Position gainage, mains sous les épaules, corps aligné tête–bassin–talons. Descends en contrôlant jusqu'à frôler le sol.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 6–8</span><span class="reps-b rb-i">Intermédiaire : 3 × 8–12</span><span class="reps-b rb-a">Avancé : 4 × 12–15</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="group-section" id="bras">
+      <div class="group-header"><div class="group-title">BRAS</div><div class="group-count">2 exercices</div></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=Q6jvEtCd028" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/Q6jvEtCd028/maxresdefault.jpg" alt="Curl biceps" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Curl biceps</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Biceps brachial</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en montant, expire en descendant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Pieds sur la bande, monte les mains vers les épaules, coudes fixes.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=2cHDkukK4FQ" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/2cHDkukK4FQ/maxresdefault.jpg" alt="Extension triceps" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Extension triceps</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Triceps</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en relâchant vers le bas, expire en remontant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Fixe l'élastique en haut, tire vers le bas en gardant les coudes proches du corps.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="group-section" id="abdominaux">
+      <div class="group-header"><div class="group-title">ABDOMINAUX</div><div class="group-count">3 exercices</div></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=IQsYNagLan4" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/IQsYNagLan4/maxresdefault.jpg" alt="Gainage Anti rotation (Pallof Press)" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Gainage Anti rotation (Pallof Press)</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Grand droit de l'abdomen, obliques, transverse</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Expire en poussant, inspire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Fixe l'élastique sur le côté, bras tendus devant toi, résiste à la rotation.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10</span><span class="reps-b rb-i">Intermédiaire : 3 × 15</span><span class="reps-b rb-a">Avancé : 4 × 20 sec</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=Md8pJn70zPM" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/Md8pJn70zPM/maxresdefault.jpg" alt="Bird dog avec élastique" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Bird dog avec élastique</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Transverse, lombaires, fessiers</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en étendant, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">À 4 pattes, place un élastique entre la main et le pied opposés. Étends simultanément le bras et la jambe opposée.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8</span><span class="reps-b rb-i">Intermédiaire : 3 × 10</span><span class="reps-b rb-a">Avancé : 4 × 12</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=Nw51HJQgidc" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/Nw51HJQgidc/maxresdefault.jpg" alt="Planche latéral avec mini band" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Planche latéral avec mini band</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Moyen fessier, obliques, transverse de l'abdomen</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire lors de l'ouverture de la hanche, garde une respiration contrôlée.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place l'élastique autour des cuisses, juste au-dessus des genoux. En appui sur l'avant-bras, corps aligné. Décolle le bassin et écarte légèrement le genou supérieur contre la résistance.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Durée / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 20–30 sec</span><span class="reps-b rb-i">Intermédiaire : 3 × 30–40 sec</span><span class="reps-b rb-a">Avancé : 4 × 40–60 sec</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="group-section" id="membres">
+      <div class="group-header"><div class="group-title">MEMBRES INFÉRIEURS</div><div class="group-count">7 exercices</div></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=PiK5s95SeNk" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/PiK5s95SeNk/maxresdefault.jpg" alt="Squat avec mini-band" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Squat avec mini-band</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Quadriceps, fessiers, ischio-jambiers</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Expire en montant, inspire en descendant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place la bande au-dessus des genoux, descends en squat en gardant les genoux alignés avec les orteils.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8–10</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=G0D_9ybxbww" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/G0D_9ybxbww/maxresdefault.jpg" alt="Pas latéraux" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Pas latéraux</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Moyen fessier, petit fessier, tenseur du fascia lata</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire lors du pas latéral, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place l'élastique autour des cuisses. Fléchis légèrement les hanches et genoux (demi-squat). Fais un pas latéral contrôlé sans rapprocher complètement les pieds.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10 pas/côté</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15/côté</span><span class="reps-b rb-a">Avancé : 4 × 15–20/côté</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=kSMMYGAhNq4" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/kSMMYGAhNq4/maxresdefault.jpg" alt="Fentes arrières" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Fentes arrières</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Quadriceps, fessiers</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Expire en montant, inspire en descendant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place un pied sur l'élastique et l'autre en arrière, descends en fente.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8</span><span class="reps-b rb-i">Intermédiaire : 3 × 10</span><span class="reps-b rb-a">Avancé : 4 × 12–15</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=lRpAtjmQnTQ" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/lRpAtjmQnTQ/maxresdefault.jpg" alt="Coquillage" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Coquillage</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Fessiers (moyen fessier), stabilisateurs de hanche</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Expire à l'ouverture, inspire au retour contrôlé.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Allongé sur le côté, genoux fléchis, élastique placé au-dessus des genoux. Garde les pieds en contact et ouvre le genou supérieur sans basculer le bassin.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 12</span><span class="reps-b rb-i">Intermédiaire : 3 × 15</span><span class="reps-b rb-a">Avancé : 4 × 20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=jq6jacF6W_k" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/jq6jacF6W_k/maxresdefault.jpg" alt="Soulevé de terre" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Soulevé de terre</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Ischio-jambiers, grand fessier, érecteurs du rachis, adducteurs</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en descendant, expire en remontant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Place les pieds sur l'élastique, largeur de hanches. Saisis la bande avec les deux mains. Pousse les hanches vers l'arrière en gardant le dos droit. Descends jusqu'à sentir la tension des ischios, puis pousse le bassin vers l'avant.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 8–10</span><span class="reps-b rb-i">Intermédiaire : 3 × 10–12</span><span class="reps-b rb-a">Avancé : 4 × 12–15</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=LzWyNxkEOYc" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/LzWyNxkEOYc/maxresdefault.jpg" alt="Mobilité de cheville" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Mobilité de cheville</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Triceps sural (gastrocnémiens, soléaire), tibial antérieur</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire en avançant le genou, expire en revenant.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Fixe l'élastique en avant de la cheville, juste sous les malléoles. Place le pied au sol en position fente, talon bien ancré. Avance le genou vers l'avant en gardant le talon au sol.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Répétitions / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 10 mobilisations</span><span class="reps-b rb-i">Intermédiaire : 3 × 12–15</span><span class="reps-b rb-a">Avancé : 3–4 × 15–20</span></div></div>
+        </div>
+      </div>
+    </div>
+      <div class="exercise-sep"></div>
+    <div class="exercise-card">
+      <div class="ex-layout">
+        <a href="https://www.youtube.com/watch?v=ByS3Wx0rgV8" target="_blank" rel="noopener" class="ex-video">
+          <img src="https://img.youtube.com/vi/ByS3Wx0rgV8/maxresdefault.jpg" alt="Étirement chaîne postérieure" loading="lazy" />
+          <div class="ex-overlay"><div class="ex-play"><svg width="20" height="20" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20" fill="#3B6B4A"/></svg></div></div>
+        </a>
+        <div class="ex-info">
+          <div class="ex-head"><div class="ex-name">Étirement chaîne postérieure</div></div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div><div class="ex-detail-lbl">Muscles ciblés</div><div class="ex-detail-txt">Ischio-jambiers, mollets, fessiers</div></div>
+              <div><div class="ex-detail-lbl">Respiration</div><div class="ex-detail-txt">Inspire profondément, expire lentement en relâchant les tensions.</div></div>
+            </div>
+            <div class="ex-full"><div class="ex-detail-lbl">Consignes</div><div class="ex-detail-txt">Allongé sur le dos, passe l'élastique sous l'avant-pied. Tends la jambe vers le plafond en gardant le bassin neutre. Tire légèrement avec les mains pour augmenter la tension.</div></div>
+          </div>
+          <div class="ex-reps"><div class="reps-lbl">Durée / Séries</div><div class="reps-row"><span class="reps-b rb-d">Débutant : 2 × 20 sec/jambe</span><span class="reps-b rb-i">Intermédiaire : 3 × 30 sec/jambe</span><span class="reps-b rb-a">Avancé : 3–4 × 40–45 sec/jambe</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- CONSEILS -->
+    <div class="special-section" id="conseils">
+      <div class="special-header"><div class="special-title">Conseils du kinésithérapeute</div></div>
+      <div class="conseil-block"><h4>Échauffez-vous toujours avant de commencer</h4><p>5 à 10 minutes d'activation musculaire légère avant chaque séance sont indispensables. Commencez par des rotations articulaires (épaules, hanches, chevilles) et quelques minutes de marche rapide. Cela prépare vos articulations, augmente la température musculaire et réduit le risque de blessure.</p></div>
+      <div class="conseil-block"><h4>Choisissez la bonne résistance</h4><p>La résistance idéale vous permet d'effectuer toutes les répétitions avec une technique parfaite, tout en ressentant un effort réel sur les 2–3 dernières répétitions. Si vous ne maintenez pas la bonne posture, réduisez la résistance. Progressez graduellement.</p></div>
+      <div class="conseil-block"><h4>Concentrez-vous sur la qualité du mouvement</h4><p>Avec les élastiques, la tension est constante tout au long du mouvement. Contrôlez chaque phase : la montée ET la descente. Le retour lent et contrôlé est aussi efficace que la poussée. Ne laissez jamais l'élastique vous ramener passivement.</p></div>
+      <div class="conseil-block"><h4>Respectez les temps de récupération</h4><p>La récupération est une composante essentielle de toute progression. C'est pendant cette phase que le tissu musculaire se répare et se renforce. Négliger le repos entre deux séances sollicitant les mêmes groupes musculaires expose à des micro-traumatismes cumulatifs pouvant évoluer vers des blessures tendinomusculaires. En cas de douleur persistante, différente des courbatures habituelles, consultez un kinésithérapeute.</p></div>
+      <div class="conseil-block"><h4>Progressez intelligemment</h4><p>Augmentez la difficulté progressivement : d'abord le nombre de répétitions, puis les séries, enfin la résistance. Ne changez qu'un paramètre à la fois. Une progression de 5 à 10% par semaine est idéale et durable.</p></div>
+      <div class="conseil-block"><h4>Travaillez votre mobilité articulaire</h4><p>Le renforcement musculaire seul ne suffit pas pour maintenir une articulation en bonne santé. La mobilité articulaire est tout aussi fondamentale : elle garantit une amplitude de mouvement optimale, réduit les contraintes mécaniques sur les structures passives (cartilage, ligaments, capsule) et prévient les raideurs compensatoires. Intégrez systématiquement des exercices de mobilisation active dans vos séances pour protéger vos articulations sur le long terme.</p></div>
+      <div class="conseil-block"><h4>Hydratez-vous suffisamment</h4><p>Buvez de l'eau avant, pendant et après votre séance. Une déshydratation même légère réduit les performances musculaires et augmente le risque de crampes.</p></div>
+    </div>
+
+    <!-- PRO+ -->
+    <div class="special-section" id="pro">
+      <div class="special-header"><div class="special-title">MOVIFLEX PRO+</div></div>
+      <p style="font-size:15px;color:var(--c-mid);margin-bottom:24px;line-height:1.75;">Vous souhaitez aller plus loin dans votre progression ? Découvrez les ressources exclusives MOVIFLEX PRO+.</p>
+      <div class="pro-grid">
+        <div class="pro-card"><div class="pro-tag">Bientôt disponible</div><h4>Programme sur mesure</h4><p>Un programme personnalisé selon votre profil, vos objectifs et votre niveau. Conçu par Sofiane, kinésithérapeute.</p></div>
+        <div class="pro-card"><div class="pro-tag">Bientôt disponible</div><h4>Suivi de progression</h4><p>Tableaux de suivi, conseils personnalisés et ajustements de programme selon vos résultats.</p></div>
+        <div class="pro-card"><div class="pro-tag">Bientôt disponible</div><h4>Vidéos avancées</h4><p>Des exercices de niveau avancé, des variantes et des combinaisons pour continuer à progresser.</p></div>
+        <div class="pro-card"><div class="pro-tag">Bientôt disponible</div><h4>Consultation kiné en ligne</h4><p>Une consultation vidéo avec Sofiane pour analyser votre technique et adapter votre programme.</p></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-section" id="contact">
+      <h3>Une question ? Contactez-nous</h3>
+      <p>Notre équipe est disponible pour répondre à toutes vos questions sur le kit et les exercices.</p>
+      <div class="contact-btns">
+        <a href="/cdn-cgi/l/email-protection#02616d6c76636176426f6d746b646e677a33312c616d6f" class="contact-btn contact-btn-email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span class="__cf_email__" data-cfemail="2d4e4243594c4e596d40425b444b4148551c1e034e4240">[email&#160;protected]</span>
+        </a>
+        <a href="https://www.instagram.com/moviflexbykine/" target="_blank" rel="noopener" class="contact-btn contact-btn-ig">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="white"/></svg>
+          @moviflexbykine
+        </a>
+        <a href="https://www.tiktok.com/@moviflexbykine" target="_blank" rel="noopener" class="contact-btn contact-btn-tt">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 4"/></svg>
+          @moviflexbykine
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="guide-footer">
+    <img src="https://moviflex-sketch.github.io/moviflex-assets/images/logo-blanc.png" alt="MOVIFLEX" />
+    <p>© 2026 MOVIFLEX — Guide exclusif réservé aux clients. Contenu protégé.</p>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Retour au site MOVIFLEX
+    </a>
+
+  </footer>
+
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function togglePwd() {
+    var inp = document.getElementById('password-input');
+    var on  = document.getElementById('eye-on');
+    var off = document.getElementById('eye-off');
+    if (inp.type === 'password') {
+      inp.type = 'text'; on.style.display = 'none'; off.style.display = 'block';
+    } else {
+      inp.type = 'password'; on.style.display = 'block'; off.style.display = 'none';
+    }
+  }
+
+  var PASSWORD = 'Moviflex2026';
+  function checkPassword() {
+    var inp   = document.getElementById('password-input');
+    var error = document.getElementById('login-error');
+    if (inp.value === PASSWORD) {
+      var cb = document.getElementById('remember-me');
+      if (cb && cb.checked) {
+        document.cookie = 'mvfx_auth=1; max-age=2592000; path=/';
+      }
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    } else {
+      error.style.display = 'block';
+      inp.style.borderColor = '#e05555';
+      setTimeout(function() { error.style.display='none'; inp.style.borderColor=''; }, 3000);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', function() {
+    var cb = document.getElementById('remember-me');
+    if (document.cookie.indexOf('mvfx_auth=1') !== -1) {
+      if (cb) cb.checked = true;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    }
+  });
+
+  var sections = document.querySelectorAll('.group-section, .special-section, .contact-section');
+  var btns = document.querySelectorAll('.sommaire-btn');
+  window.addEventListener('scroll', function() {
+    var cur = '';
+    sections.forE
