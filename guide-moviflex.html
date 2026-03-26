@@ -1013,9 +1013,9 @@
       <h3>Une question ? Contactez-nous</h3>
       <p>Notre équipe est disponible pour répondre à toutes vos questions sur le kit et les exercices.</p>
       <div class="contact-btns">
-        <a href="/cdn-cgi/l/email-protection#e4878b8a90858790a4898b928d8288819cd5d7ca878b89" class="contact-btn contact-btn-email">
+        <a href="mailto:contact@moviflex13.com" class="contact-btn contact-btn-email">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span class="__cf_email__" data-cfemail="9ffcf0f1ebfefcebdff2f0e9f6f9f3fae7aeacb1fcf0f2">[email&#160;protected]</span>
+          contact@moviflex13.com
         </a>
         <a href="https://www.instagram.com/moviflexbykine/" target="_blank" rel="noopener" class="contact-btn contact-btn-ig">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="white"/></svg>
@@ -1062,7 +1062,7 @@
   </div>
 
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   function togglePwd() {
     var inp = document.getElementById('password-input');
     var on  = document.getElementById('eye-on');
@@ -1085,7 +1085,6 @@
     }
   }
 
-  // Accès auto si token URL
   (function() {
     var params = new URLSearchParams(window.location.search);
     if (params.get('access') === 'granted') {
@@ -1099,7 +1098,6 @@
     }
   })();
 
-  // ── Menu mobile guide
   function toggleGuideMenu() {
     var m   = document.getElementById('guideMobileMenu');
     var btn = document.getElementById('guideMenuToggle');
@@ -1124,7 +1122,6 @@
     }, 50);
   }
 
-  // ── FAB Sommaire
   function toggleFabPanel() {
     var panel = document.getElementById('fabPanel');
     var btn   = document.getElementById('fabSommaire');
@@ -1147,3 +1144,9 @@
   var fabLinks = document.querySelectorAll('.fab-panel a');
   window.addEventListener('scroll', function() {
     var cur = '';
+    sections.forEach(function(s) { if (window.scrollY >= s.offsetTop - 160) cur = s.id; });
+    fabLinks.forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }, { passive: true });
+</script>
+</body>
+</html>
