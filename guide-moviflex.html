@@ -1089,13 +1089,10 @@
     }
   }
 
-  // Accès automatique si token URL ou sessionStorage
+  // Accès automatique si token dans l'URL
   window.addEventListener('DOMContentLoaded', function() {
     var params = new URLSearchParams(window.location.search);
-    var hasToken = params.get('access') === 'granted';
-    var hasSession = sessionStorage.getItem('mvfx_access') === 'granted';
-    if (hasToken || hasSession) {
-      if (hasToken) sessionStorage.setItem('mvfx_access', 'granted');
+    if (params.get('access') === 'granted') {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('main-content').style.display = 'block';
       history.replaceState(null, '', window.location.pathname);
