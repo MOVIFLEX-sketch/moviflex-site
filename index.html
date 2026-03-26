@@ -2492,7 +2492,7 @@
         inp.value = '';
         btn.innerHTML = 'Accéder au guide';
         btn.style.background = '';
-        window.location.href = GUIDE_URL;
+        window.location.href = GUIDE_URL + '?access=granted';
       }, 600);
     } else {
       inp.classList.add('error');

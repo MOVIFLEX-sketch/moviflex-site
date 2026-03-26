@@ -1089,6 +1089,17 @@
     }
   }
 
+  // Accès automatique si token valide dans l'URL
+  window.addEventListener('DOMContentLoaded', function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('access') === 'granted') {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      // Nettoyer l'URL sans recharger
+      history.replaceState(null, '', window.location.pathname);
+    }
+  });
+
   // ── Menu mobile guide
   function toggleGuideMenu() {
     var m   = document.getElementById('guideMobileMenu');
