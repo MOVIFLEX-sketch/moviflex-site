@@ -1061,17 +1061,13 @@
   </div>
 
 </div>
-
 <script>
   function togglePwd() {
     var inp = document.getElementById('password-input');
     var on  = document.getElementById('eye-on');
     var off = document.getElementById('eye-off');
-    if (inp.type === 'password') {
-      inp.type = 'text'; on.style.display = 'none'; off.style.display = 'block';
-    } else {
-      inp.type = 'password'; on.style.display = 'block'; off.style.display = 'none';
-    }
+    if (inp.type === 'password') { inp.type = 'text'; on.style.display = 'none'; off.style.display = 'block'; }
+    else { inp.type = 'password'; on.style.display = 'block'; off.style.display = 'none'; }
   }
 
   var PASSWORD = 'Moviflex2026';
@@ -1083,26 +1079,30 @@
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('main-content').style.display = 'block';
     } else {
-      error.style.display = 'block';
-      inp.style.borderColor = '#e05555';
+      error.style.display = 'block'; inp.style.borderColor = '#e05555';
       setTimeout(function() { error.style.display = 'none'; inp.style.borderColor = ''; }, 3000);
     }
   }
 
-  // Accès automatique si token dans l'URL
-  window.addEventListener('DOMContentLoaded', function() {
+  // Accès auto si token URL
+  (function() {
     var params = new URLSearchParams(window.location.search);
     if (params.get('access') === 'granted') {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('main-content').style.display = 'block';
-      history.replaceState(null, '', window.location.pathname);
+      document.addEventListener('DOMContentLoaded', function() {
+        var ls = document.getElementById('login-screen');
+        var mc = document.getElementById('main-content');
+        if (ls) ls.style.display = 'none';
+        if (mc) mc.style.display = 'block';
+        history.replaceState(null, '', window.location.pathname);
+      });
     }
-  });
+  })();
 
   // ── Menu mobile guide
   function toggleGuideMenu() {
     var m   = document.getElementById('guideMobileMenu');
     var btn = document.getElementById('guideMenuToggle');
+    if (!m) return;
     var isOpen = m.classList.toggle('open');
     btn.classList.toggle('open', isOpen);
     btn.setAttribute('aria-expanded', isOpen);
@@ -1115,21 +1115,11 @@
     if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
     document.body.style.overflow = '';
   }
-
   function navigateGuide(sectionId) {
-    // 1. Fermer le menu et rétablir le scroll immédiatement
-    var m   = document.getElementById('guideMobileMenu');
-    var btn = document.getElementById('guideMenuToggle');
-    if (m) m.classList.remove('open');
-    if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
-    document.body.style.overflow = '';
-    document.body.style.position = '';
-    // 2. Scroller après que le menu soit bien fermé
+    closeGuideMenu();
     setTimeout(function() {
       var target = document.getElementById(sectionId);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
   }
 
@@ -1144,20 +1134,21 @@
     document.getElementById('fabPanel').classList.remove('open');
     document.getElementById('fabSommaire').classList.remove('open');
   }
-  // Fermer si clic extérieur
   document.addEventListener('click', function(e) {
     var panel = document.getElementById('fabPanel');
     var btn   = document.getElementById('fabSommaire');
     if (panel && panel.classList.contains('open')) {
-      if (!panel.contains(e.target) && !btn.contains(e.target)) {
-        closeFabPanel();
-      }
+      if (!panel.contains(e.target) && !btn.contains(e.target)) closeFabPanel();
     }
   });
 
-  // Highlight section active dans le FAB
   var sections = document.querySelectorAll('.group-section, .special-section, .contact-section');
   var fabLinks = document.querySelectorAll('.fab-panel a');
   window.addEventListener('scroll', function() {
     var cur = '';
-    sections.forEach
+    sections.forEach(function(s) { if (window.scrollY >= s.offsetTop - 160) cur = s.id; });
+    fabLinks.forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }, { passive: true });
+</script>
+</body>
+</html>
