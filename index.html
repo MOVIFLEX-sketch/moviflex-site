@@ -1046,10 +1046,10 @@
     .contact-value { font-size: 15px; font-weight: 500; color: var(--c-dark); text-decoration: none; }
     .contact-value:hover { color: var(--c-accent); }
     .contact-info-row {
-      display: flex;
-      gap: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
       margin-bottom: 28px;
-      flex-wrap: wrap;
     }
     .contact-item-small {
       display: flex;
@@ -1059,14 +1059,18 @@
       background: var(--c-bg);
       border-radius: 10px;
       border: 1px solid rgba(26,26,24,0.07);
-      flex: 1;
-      min-width: 200px;
+      min-width: 0;
+      overflow: hidden;
     }
     .contact-value-small {
       font-size: 13px;
       font-weight: 500;
       color: var(--c-dark);
       text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
     }
     .contact-value-small:hover { color: var(--c-accent); }
     .contact-form { display: flex; flex-direction: column; gap: 20px; }
@@ -1562,7 +1566,11 @@
       <p>MOKHTARI Sofiane</p>
 
       <h3>Hébergement</h3>
-      <p>Hébergeur : <strong>OVH SAS</strong><br>
+      <p>Hébergeur : <strong>Netlify, Inc.</strong><br>
+      Adresse : 2325 3rd Street, Suite 215, San Francisco, CA 94107, USA<br>
+      Site : <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a></p>
+      <h3>Nom de domaine</h3>
+      <p>Registrar : <strong>OVH SAS</strong><br>
       Adresse : 2 rue Kellermann, 59100 Roubaix, France<br>
       Site : <a href="https://www.ovh.com" target="_blank" rel="noopener">www.ovh.com</a></p>
 
@@ -1622,7 +1630,7 @@
       <p>Pour exercer ces droits, contactez-nous à : <a href="mailto:contact@moviflex13.com">contact@moviflex13.com</a>. Nous nous engageons à répondre dans un délai d'un mois.</p>
 
       <h3>Hébergement des données</h3>
-      <p>Les données techniques du site sont hébergées par <strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France — dans le respect de la réglementation européenne.</p>
+      <p>Les données techniques du site sont hébergées par <strong>Netlify, Inc.</strong>, 2325 3rd Street, Suite 215, San Francisco, CA 94107, USA. Le nom de domaine est géré par OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.</p>
 
       <h3>Réclamation</h3>
       <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a></p>
@@ -1674,7 +1682,7 @@
       <div class="contact-info-row">
         <div class="contact-item-small">
           <div class="contact-icon"><svg viewBox="0 0 20 20" fill="none" stroke="var(--c-accent)" stroke-width="1.8"><path d="M3 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M2 5l8 6 8-6"/></svg></div>
-          <a href="mailto:contact@moviflex13.com" class="contact-value-small">contact@moviflex13.com</a>
+          <a href="mailto:contact@moviflex13.com">contact@moviflex13.com</a>
         </div>
         <div class="contact-item-small">
           <div class="contact-icon"><svg viewBox="0 0 20 20" fill="none" stroke="var(--c-accent)" stroke-width="1.8"><rect x="2" y="2" width="16" height="16" rx="4"/><circle cx="10" cy="10" r="3"/><circle cx="14.5" cy="5.5" r="0.5" fill="var(--c-accent)"/></svg></div>
@@ -1683,6 +1691,10 @@
         <div class="contact-item-small">
           <div class="contact-icon"><svg viewBox="0 0 20 20" fill="none" stroke="var(--c-accent)" stroke-width="1.8"><path d="M8 10a4 4 0 1 0 4 4V3a5 5 0 0 0 5 4"/></svg></div>
           <a href="https://www.tiktok.com/@moviflexbykine" target="_blank" rel="noopener" class="contact-value-small">@moviflexbykine</a>
+        </div>
+        <div class="contact-item-small">
+          <div class="contact-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M10 1.667A8.333 8.333 0 0 0 1.667 10c0 1.467.383 2.842 1.05 4.033L1.667 18.333l4.417-1.025A8.292 8.292 0 0 0 10 18.333 8.333 8.333 0 0 0 18.333 10 8.333 8.333 0 0 0 10 1.667z" fill="#25D366"/><path d="M13.542 11.883c-.2-.1-1.183-.583-1.367-.65-.183-.067-.317-.1-.45.1-.133.2-.517.65-.633.783-.117.133-.233.15-.433.05-.2-.1-.842-.308-1.604-.983-.592-.525-.992-1.175-1.108-1.375-.117-.2-.012-.308.087-.408.09-.09.2-.233.3-.35.1-.117.133-.2.2-.333.067-.133.033-.25-.017-.35-.05-.1-.45-1.083-.617-1.483-.162-.392-.325-.337-.45-.342h-.383c-.133 0-.35.05-.533.25-.183.2-.7.683-.7 1.667s.717 1.933.817 2.067c.1.133 1.408 2.15 3.408 3.017.475.2.846.325 1.134.417.475.15.908.129 1.25.079.383-.058 1.183-.483 1.35-.95.167-.467.167-.867.117-.95-.05-.083-.183-.133-.383-.233z" fill="white"/></svg></div>
+          <a href="https://wa.me/33637184262" target="_blank" rel="noopener" class="contact-value-small">WhatsApp</a>
         </div>
       </div>
 
@@ -1789,7 +1801,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg>
         Mon guide vidéo
       </button>
-      <a href="https://www.amazon.fr" target="_blank" rel="noopener" class="btn btn-amazon" aria-label="Acheter MOVIFLEX sur Amazon">
+      <a href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank" rel="noopener" class="btn btn-amazon" aria-label="Acheter MOVIFLEX sur Amazon">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         Acheter sur Amazon
       </a>
@@ -1819,7 +1831,7 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg>
       Mon guide vidéo
     </button>
-    <a href="https://www.amazon.fr" target="_blank" rel="noopener" class="btn btn-amazon">
+    <a href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank" rel="noopener" class="btn btn-amazon">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
       Acheter sur Amazon
     </a>
@@ -1847,7 +1859,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           Découvrir le kit
         </a>
-        <a href="https://www.amazon.fr" target="_blank" rel="noopener" class="btn btn-amazon">
+        <a href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank" rel="noopener" class="btn btn-amazon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           Acheter sur Amazon
         </a>
@@ -1954,7 +1966,7 @@
             </div>
           </div>
         </div>
-        <a href="https://www.amazon.fr" target="_blank" rel="noopener" class="btn btn-accent">Voir le kit sur Amazon</a>
+        <a href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank" rel="noopener" class="btn btn-accent">Voir le kit sur Amazon</a>
       </div>
     </div>
   </div>
@@ -2321,7 +2333,7 @@
     </h2>
     <p class="cta-subtitle reveal reveal-delay-1">Un kit. Deux technologies. Des résultats concrets pour tous les profils.</p>
     <div class="cta-btns reveal reveal-delay-2">
-      <a href="https://www.amazon.fr" target="_blank" rel="noopener" class="btn btn-amazon" style="font-size:15px;padding:16px 32px;">
+      <a href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank" rel="noopener" class="btn btn-amazon" style="font-size:15px;padding:16px 32px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         Acheter sur Amazon
       </a>
@@ -2351,6 +2363,9 @@
           <a href="https://www.tiktok.com/@moviflexbykine" target="_blank" rel="noopener" class="social-link" aria-label="TikTok MOVIFLEX">
             <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
           </a>
+          <a href="https://wa.me/33637184262" target="_blank" rel="noopener" class="social-link" aria-label="WhatsApp MOVIFLEX">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;"><path d="M12 2A10 10 0 0 0 2 12c0 1.76.46 3.41 1.26 4.84L2 22l5.3-1.23A10 10 0 1 0 12 2z" fill="#25D366"/><path d="M16.25 14.26c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.01-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.09 3.62.57.24 1.01.39 1.36.5.57.18 1.09.15 1.5.09.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z" fill="white"/></svg>
+          </a>
         </div>
       </div>
       <div class="footer-col">
@@ -2363,7 +2378,7 @@
       </div>
       <div class="footer-col">
         <h4>Le produit</h4>
-        <a href="https://www.amazon.fr" target="_blank" rel="noopener">Acheter sur Amazon</a>
+        <a href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank" rel="noopener">Acheter sur Amazon</a>
         <a href="#le-kit">Kit complet</a>
         <a href="#pour-qui">Profils d'utilisation</a>
         <a href="#faq">Questions fréquentes</a>
@@ -2451,26 +2466,31 @@
     var inp = document.getElementById('guide-code-input');
     var on  = document.getElementById('guide-eye-on');
     var off = document.getElementById('guide-eye-off');
-    if (inp.type === 'password') { inp.type = 'text'; on.style.display = 'none'; off.style.display = 'block'; }
-    else { inp.type = 'password'; on.style.display = 'block'; off.style.display = 'none'; }
+    if (inp.type === 'password') { inp.type = 'text'; on.style.disp
+lay = 'none'; off.style.display = 'flex'; }
+    else { inp.type = 'password'; on.style.display = 'flex'; off.style.display = 'none'; }
   }
 
-  function submitGuideCode() {
-    var inp   = document.getElementById('guide-code-input');
-    var error = document.getElementById('guide-access-error');
-    if (inp.value.trim() === GUIDE_CODE) {
-      var btn = document.querySelector('#modal-guide-access .guide-access-btn');
-      btn.innerHTML = '✓ Accès accordé...'; btn.style.background = '#2d5239';
-      setTimeout(function() {
-        closeModal('modal-guide-access');
-        inp.value = ''; btn.innerHTML = 'Accéder au guide'; btn.style.background = '';
-        window.location.href = GUIDE_URL + '?access=granted';
-      }, 600);
+  function checkGuideCode() {
+    var val = document.getElementById('guide-code-input').value.trim();
+    var err = document.getElementById('guide-code-error');
+    if (val === GUIDE_CODE) {
+      window.open(GUIDE_URL, '_blank');
+      closeModal('modal-guide-access');
+      document.getElementById('guide-code-input').value = '';
     } else {
-      inp.classList.add('error'); error.style.display = 'block';
-      setTimeout(function() { inp.classList.remove('error'); error.style.display = 'none'; }, 3000);
+      err.style.display = 'block';
+      document.getElementById('guide-code-input').classList.add('error');
+      setTimeout(function() {
+        err.style.display = 'none';
+        document.getElementById('guide-code-input').classList.remove('error');
+      }, 3000);
     }
   }
+
+  document.getElementById('guide-code-input') && document.getElementById('guide-code-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkGuideCode();
+  });
 </script>
 </body>
 </html>
