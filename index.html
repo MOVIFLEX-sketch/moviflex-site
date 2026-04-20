@@ -2375,7 +2375,6 @@
       btn.style.background = ''; btn.disabled = false; e.target.reset();
     }, 3000);
   }
-
   function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
   document.querySelectorAll('.modal-overlay').forEach(function(o) {
@@ -2384,16 +2383,12 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(function(m) { closeModal(m.id); });
   });
-
   var header = document.getElementById('header');
   window.addEventListener('scroll', function() { header.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
-
   function toggleMenu() {
-    var m = document.getElementById('mobileMenu');
-    var btn = document.querySelector('.menu-toggle');
+    var m = document.getElementById('mobileMenu'), btn = document.querySelector('.menu-toggle');
     var isOpen = m.classList.toggle('open');
-    btn.classList.toggle('open', isOpen);
-    btn.setAttribute('aria-expanded', isOpen);
+    btn.classList.toggle('open', isOpen); btn.setAttribute('aria-expanded', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
   function closeMenu() {
@@ -2402,61 +2397,43 @@
     if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
     document.body.style.overflow = '';
   }
-
   function toggleFaq(el) {
-    var item = el.parentElement;
-    var isOpen = item.classList.contains('open');
+    var item = el.parentElement, isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item.open').forEach(function(i) {
-      i.classList.remove('open');
-      i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      i.classList.remove('open'); i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
     });
     if (!isOpen) { item.classList.add('open'); el.setAttribute('aria-expanded', 'true'); }
   }
   document.querySelectorAll('.faq-question').forEach(function(q) {
-    q.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFaq(q); }
-    });
+    q.addEventListener('keydown', function(e) { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleFaq(q); } });
   });
-
   var revealObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
-    });
+    entries.forEach(function(entry) { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
-
-  var GUIDE_CODE = 'Moviflex2026';
-  var GUIDE_URL  = 'guide-moviflex.html';
-
+  var GUIDE_CODE = 'Moviflex2026', GUIDE_URL = 'guide-moviflex.html';
   function toggleGuidePwd() {
     var inp = document.getElementById('guide-code-input');
-    var on  = document.getElementById('guide-eye-on');
-    var off = document.getElementById('guide-eye-off');
-    if (inp.type === 'password') { inp.type = 'text'; on.style.disp
-lay = 'none'; off.style.display = 'flex'; }
-    else { inp.type = 'password'; on.style.display = 'flex'; off.style.display = 'none'; }
+    var on = document.getElementById('guide-eye-on'), off = document.getElementById('guide-eye-off');
+    if (inp.type==='password') { inp.type='text'; on.style.display='none'; off.style.display='block'; }
+    else { inp.type='password'; on.style.display='block'; off.style.display='none'; }
   }
-
-  function checkGuideCode() {
-    var val = document.getElementById('guide-code-input').value.trim();
-    var err = document.getElementById('guide-code-error');
-    if (val === GUIDE_CODE) {
-      window.open(GUIDE_URL, '_blank');
-      closeModal('modal-guide-access');
-      document.getElementById('guide-code-input').value = '';
-    } else {
-      err.style.display = 'block';
-      document.getElementById('guide-code-input').classList.add('error');
+  function submitGuideCode() {
+    var inp = document.getElementById('guide-code-input');
+    var error = document.getElementById('guide-access-error');
+    if (inp.value.trim() === GUIDE_CODE) {
+      var btn = document.querySelector('#modal-guide-access .guide-access-btn');
+      btn.innerHTML = '✓ Accès accordé...'; btn.style.background = '#2d5239';
       setTimeout(function() {
-        err.style.display = 'none';
-        document.getElementById('guide-code-input').classList.remove('error');
-      }, 3000);
+        closeModal('modal-guide-access'); inp.value = '';
+        btn.innerHTML = 'Accéder au guide'; btn.style.background = '';
+        window.location.href = GUIDE_URL + '?access=granted';
+      }, 600);
+    } else {
+      inp.classList.add('error'); error.style.display = 'block';
+      setTimeout(function() { inp.classList.remove('error'); error.style.display = 'none'; }, 3000);
     }
   }
-
-  document.getElementById('guide-code-input') && document.getElementById('guide-code-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkGuideCode();
-  });
 </script>
 </body>
 </html>
