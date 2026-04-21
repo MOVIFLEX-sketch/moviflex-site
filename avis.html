@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon avis – MOVIFLEX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vert: #1a6b4a;
+    --vert-clair: #e8f4ef;
+    --vert-hover: #145538;
+    --noir: #0f0f0f;
+    --gris-doux: #f5f5f3;
+    --gris-texte: #6b6b6b;
+    --blanc: #ffffff;
+    --bordure: #e0e0d8;
+    --wa: #25D366;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Jost', sans-serif; font-weight: 300; background: var(--gris-doux); color: var(--noir); min-height: 100vh; }
+
+  header { background: var(--noir); padding: 28px 24px 24px; text-align: center; }
+  header::after { content: ''; display: block; width: 40px; height: 2px; background: var(--vert); margin: 16px auto 0; }
+  .logo-img { height: 42px; width: auto; display: block; margin: 0 auto; }
+  .header-sub { color: rgba(255,255,255,0.45); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-top: 14px; font-weight: 400; }
+
+  .intro { background: var(--blanc); border-bottom: 1px solid var(--bordure); padding: 36px 24px 32px; text-align: center; }
+  .intro-titre { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; color: var(--noir); line-height: 1.2; margin-bottom: 12px; }
+  .intro-sub { font-size: 13px; color: var(--gris-texte); line-height: 1.7; max-width: 380px; margin: 0 auto 20px; }
+  .badge-rapide { display: inline-flex; align-items: center; gap: 6px; background: var(--vert-clair); color: var(--vert); font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; }
+  .badge-rapide::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--vert); }
+
+  .encart-marque { display: flex; align-items: flex-start; gap: 14px; background: var(--gris-doux); border-left: 3px solid var(--vert); border-radius: 0 10px 10px 0; padding: 16px 18px; margin: 20px auto 0; max-width: 420px; text-align: left; }
+  .encart-marque-icone { font-size: 22px; flex-shrink: 0; line-height: 1; }
+  .encart-marque-texte { font-size: 13px; color: var(--gris-texte); line-height: 1.65; }
+  .encart-marque-texte strong { display: block; color: var(--noir); font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+
+  .progress-wrap { padding: 16px 24px 0; max-width: 640px; margin: 0 auto; }
+  .progress-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--gris-texte); margin-bottom: 6px; }
+  .progress-track { height: 3px; background: var(--bordure); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--vert); border-radius: 2px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+
+  .form-wrap { max-width: 640px; margin: 0 auto; padding: 20px 24px 40px; }
+
+  .q-card { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 22px 20px 18px; margin-bottom: 12px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .q-card:focus-within { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(26,107,74,0.08); }
+  .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .q-num-badge { width: 22px; height: 22px; border-radius: 50%; background: var(--noir); color: var(--blanc); font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .q-categorie { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gris-texte); font-weight: 500; }
+  .q-text { font-size: 14px; font-weight: 400; color: var(--noir); line-height: 1.55; margin-bottom: 18px; }
+
+  .slider-zone { display: flex; flex-direction: column; gap: 8px; }
+  .slider-top { display: flex; align-items: center; gap: 12px; }
+  .slider-top input[type=range] { -webkit-appearance: none; appearance: none; flex: 1; height: 3px; background: var(--bordure); border-radius: 2px; outline: none; cursor: pointer; }
+  .slider-top input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--vert); cursor: pointer; border: 3px solid var(--blanc); box-shadow: 0 0 0 1px var(--vert); transition: transform 0.15s; }
+  .slider-top input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+  .score-pill { min-width: 42px; height: 42px; border-radius: 21px; color: var(--blanc); font-size: 16px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; font-family: 'Jost', sans-serif; }
+  .score-pill.low { background: #c0392b; }
+  .score-pill.mid { background: #e67e22; }
+  .score-pill.good { background: var(--vert); }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 10px; color: #aaa; padding: 0 1px; }
+
+  /* COMMENTAIRE */
+  .comment-toggle { display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; font-size: 11px; color: var(--gris-texte); cursor: pointer; border: none; background: none; padding: 0; font-family: 'Jost', sans-serif; font-weight: 400; transition: color 0.2s; }
+  .comment-toggle:hover { color: var(--vert); }
+  .comment-toggle .arrow { display: inline-block; transition: transform 0.2s; font-style: normal; }
+  .comment-toggle.open .arrow { transform: rotate(90deg); }
+  .comment-box { display: none; margin-top: 8px; }
+  .comment-box.visible { display: block; }
+  .comment-box textarea { width: 100%; border: 1px solid var(--bordure); border-radius: 8px; padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300; color: var(--noir); background: var(--gris-doux); resize: none; outline: none; transition: border-color 0.2s; line-height: 1.5; }
+  .comment-box textarea:focus { border-color: var(--vert); background: var(--blanc); }
+  .comment-box textarea::placeholder { color: #bbb; }
+
+  .submit-wrap { margin-top: 8px; }
+  .btn-submit { width: 100%; padding: 16px; background: var(--vert); color: var(--blanc); border: none; border-radius: 12px; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+  .btn-submit:hover { background: var(--vert-hover); }
+
+  .wa-bloc { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 18px 20px; margin-top: 12px; display: flex; align-items: center; gap: 14px; text-decoration: none; transition: border-color 0.2s; }
+  .wa-bloc:hover { border-color: var(--wa); }
+  .wa-icon { width: 46px; height: 46px; border-radius: 50%; background: var(--wa); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .wa-icon svg { width: 24px; height: 24px; fill: #fff; }
+  .wa-texts { flex: 1; }
+  .wa-titre { font-size: 13px; font-weight: 500; color: var(--noir); margin-bottom: 2px; }
+  .wa-sub { font-size: 12px; color: var(--gris-texte); }
+  .wa-arrow { font-size: 18px; color: var(--gris-texte); }
+
+  /* ÉCRAN RÉSULTAT */
+  #ecran-resultat { display: none; max-width: 640px; margin: 0 auto; padding: 40px 24px; text-align: center; }
+  .result-cercle { width: 100px; height: 100px; border-radius: 50%; background: var(--vert); color: var(--blanc); font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+  .result-cercle.bas { background: #c0392b; }
+  @keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .result-titre { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; color: var(--noir); margin-bottom: 12px; }
+  .result-msg { font-size: 14px; color: var(--gris-texte); line-height: 1.7; max-width: 380px; margin: 0 auto 28px; }
+  .btn-amazon { display: inline-block; padding: 14px 28px; background: var(--noir); color: var(--blanc); border-radius: 8px; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; transition: background 0.2s; margin-bottom: 28px; }
+  .btn-amazon:hover { background: var(--vert); }
+
+  /* FOOTER */
+  footer { background: var(--noir); text-align: center; padding: 28px 24px 32px; margin-top: 20px; }
+  .footer-logo { height: 28px; width: auto; opacity: 0.5; margin-bottom: 20px; }
+  .footer-signature { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; }
+  .footer-nom { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.8); margin-bottom: 3px; }
+  .footer-role { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+  .footer-socials { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; text-decoration: none; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: 0.5px; transition: border-color 0.2s, color 0.2s; }
+  .social-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+  .social-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+  .footer-copy { font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 20px; letter-spacing: 1px; }
+
+  @media (max-width: 480px) {
+    .intro-titre { font-size: 24px; }
+    .q-text { font-size: 13px; }
+    .form-wrap { padding: 16px 16px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://moviflex-sketch.github.io/moviflex-assets/images/logo-blanc.png" alt="Logo Moviflex" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'">
+  <div id="logo-fallback" style="display:none; font-size:22px; font-weight:500; color:#fff; letter-spacing:3px; font-family:'Jost',sans-serif;">MOVIFLEX</div>
+  <div class="header-sub">Votre retour compte</div>
+</header>
+
+<div class="intro">
+  <h1 class="intro-titre">Comment s'est passée<br>votre expérience ?</h1>
+  <p class="intro-sub">Glissez simplement chaque curseur — pas besoin d'écrire. Votre avis nous aide à nous améliorer et aide d'autres sportifs à faire le bon choix.</p>
+  <div class="badge-rapide">2 minutes chrono</div>
+  <div class="encart-marque">
+    <div class="encart-marque-icone">🌱</div>
+    <div class="encart-marque-texte">
+      <strong>Nous sommes une jeune marque française.</strong>
+      Chaque avis compte énormément pour nous. Ce questionnaire nous permet de progresser et de toujours mieux vous accompagner. Merci du fond du cœur pour votre temps.
+    </div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-info">
+    <span id="prog-label">0 / 11 questions</span>
+    <span id="prog-pct">0%</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+</div>
+
+<div class="form-wrap" id="form-zone">
+
+  <!-- MACRO pour chaque question : slider + toggle commentaire -->
+
+  <!-- Q1 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">1</div><span class="q-categorie">Expérience d'achat</span></div>
+    <p class="q-text">Le produit reçu correspond-il à ce que vous imaginiez en le commandant sur Amazon ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,0)"><div class="score-pill good" id="p0">5</div></div>
+      <div class="slider-labels"><span>Pas du tout</span><span>Parfaitement</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c0"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">2</div><span class="q-categorie">Fiabilité des photos Amazon</span></div>
+    <p class="q-text">Les photos Amazon reflètent-elles fidèlement le produit que vous avez reçu ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,1)"><div class="score-pill good" id="p1">5</div></div>
+      <div class="slider-labels"><span>Très différent</span><span>Identique</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c1"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">3</div><span class="q-categorie">Design</span></div>
+    <p class="q-text">Comment notez-vous le design et l'esthétique générale du kit Moviflex ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,2)"><div class="score-pill good" id="p2">5</div></div>
+      <div class="slider-labels"><span>Décevant</span><span>Superbe</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c2"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">4</div><span class="q-categorie">Qualité premium</span></div>
+    <p class="q-text">La qualité des matériaux vous a-t-elle semblé solide et durable dans le temps ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,3)"><div class="score-pill good" id="p3">5</div></div>
+      <div class="slider-labels"><span>Fragile</span><span>Premium</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c3"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">5</div><span class="q-categorie">Facilité d'utilisation</span></div>
+    <p class="q-text">Le kit était-il facile à prendre en main dès la première utilisation ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,4)"><div class="score-pill good" id="p4">5</div></div>
+      <div class="slider-labels"><span>Compliqué</span><span>Intuitif</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c4"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">6</div><span class="q-categorie">Guide vidéo</span></div>
+    <p class="q-text">Le guide vidéo vous a-t-il permis de démarrer rapidement et en toute confiance ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,5)"><div class="score-pill good" id="p5">5</div></div>
+      <div class="slider-labels"><span>Pas clair</span><span>Très utile</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c5"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">7</div><span class="q-categorie">Expertise kiné</span></div>
+    <p class="q-text">Le fait que le kit soit conçu par un kiné vous a-t-il rassuré sur son sérieux et son efficacité ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,6)"><div class="score-pill good" id="p6">5</div></div>
+      <div class="slider-labels"><span>Pas du tout</span><span>Totalement</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c6"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">8</div><span class="q-categorie">Niveaux de résistance</span></div>
+    <p class="q-text">Les différents niveaux de résistance proposés correspondent-ils à vos besoins actuels ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,7)"><div class="score-pill good" id="p7">5</div></div>
+      <div class="slider-labels"><span>Inadapté</span><span>Parfait</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c7"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">9</div><span class="q-categorie">Résultats ressentis</span></div>
+    <p class="q-text">Ressentez-vous déjà une amélioration dans votre mobilité ou votre confort physique ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,8)"><div class="score-pill good" id="p8">5</div></div>
+      <div class="slider-labels"><span>Aucun effet</span><span>Nette amélioration</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c8"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">10</div><span class="q-categorie">Recommandation</span></div>
+    <p class="q-text">Recommanderiez-vous Moviflex à un proche ou à un sportif de votre entourage ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,9)"><div class="score-pill good" id="p9">5</div></div>
+      <div class="slider-labels"><span>Jamais</span><span>Sans hésiter</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c9"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge">11</div><span class="q-categorie">Rapport qualité / valeur globale</span></div>
+    <p class="q-text">Le prix vous semble-t-il justifié au regard de tout ce que vous avez reçu — kit premium, guide vidéo, accès à la communauté WhatsApp et service client réactif ?</p>
+    <div class="slider-zone">
+      <div class="slider-top"><input type="range" min="1" max="10" value="5" step="1" oninput="maj(this,10)"><div class="score-pill good" id="p10">5</div></div>
+      <div class="slider-labels"><span>Trop cher</span><span>Excellent rapport</span></div>
+      <button class="comment-toggle" onclick="toggleComment(this)"><span class="arrow">›</span>&nbsp;Ajouter un commentaire</button>
+      <div class="comment-box"><textarea rows="2" placeholder="Votre commentaire (optionnel)…" id="c10"></textarea></div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="btn-submit" onclick="soumettre()">Envoyer mon avis →</button>
+  </div>
+
+  <a class="wa-bloc" href="https://wa.me/33637184262" target="_blank">
+    <div class="wa-icon">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </div>
+    <div class="wa-texts">
+      <div class="wa-titre">Une question ou un problème ?</div>
+      <div class="wa-sub">Je vous réponds personnellement sur WhatsApp</div>
+    </div>
+    <div class="wa-arrow">›</div>
+  </a>
+</div>
+
+<!-- ÉCRAN RÉSULTAT -->
+<div id="ecran-resultat">
+  <div class="result-cercle" id="cercle-score"></div>
+  <h2 class="result-titre" id="result-titre"></h2>
+  <p class="result-msg" id="result-msg"></p>
+  <div id="result-cta"></div>
+  <a class="wa-bloc" href="https://wa.me/33637184262" target="_blank" style="text-align:left; max-width:420px; margin:0 auto;">
+    <div class="wa-icon">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </div>
+    <div class="wa-texts">
+      <div class="wa-titre">Une question ou un problème ?</div>
+      <div class="wa-sub">Je vous réponds personnellement sur WhatsApp</div>
+    </div>
+    <div class="wa-arrow">›</div>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <img src="https://moviflex-sketch.github.io/moviflex-assets/images/logo-blanc.png" alt="Moviflex" class="footer-logo" onerror="this.style.display='none'">
+
+  <div class="footer-signature">
+    <div style="display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:14px;">
+      <img src="https://raw.githubusercontent.com/MOVIFLEX-sketch/moviflex-assets/d2def85189cec33deaf89babbf01cc1b1ebbb3ee/images/Photomoi.jpeg"
+           alt="Sofiane, fondateur Moviflex"
+           style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid #1a6b4a; flex-shrink:0;">
+      <div style="text-align:left;">
+        <div class="footer-nom">Sofiane — Fondateur Moviflex</div>
+        <div class="footer-role">Kinésithérapeute &amp; créateur du kit</div>
+      </div>
+    </div>
+    <div class="footer-socials">
+      <!-- Instagram -->
+      <a class="social-btn" href="https://www.instagram.com/moviflexbykine/" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        @moviflexbykine
+      </a>
+      <!-- TikTok -->
+      <a class="social-btn" href="https://www.tiktok.com/@moviflexbykine" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+        @moviflexbykine
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-copy">© 2026 MOVIFLEX · Tous droits réservés</div>
+</footer>
+
+<script>
+  const scores = [5,5,5,5,5,5,5,5,5,5,5];
+  const touches = new Set();
+
+  // ── Lecture des paramètres URL (email + prénom passés par Brevo)
+  const params = new URLSearchParams(window.location.search);
+  const contactEmail  = params.get('email')  || '';
+  const contactPrenom = params.get('prenom') || '';
+
+  function toggleComment(btn) {
+    btn.classList.toggle('open');
+    const box = btn.nextElementSibling;
+    box.classList.toggle('visible');
+    if (box.classList.contains('visible')) {
+      box.querySelector('textarea').focus();
+    }
+  }
+
+  function maj(el, idx) {
+    const v = parseInt(el.value);
+    scores[idx] = v;
+    touches.add(idx);
+    const pill = document.getElementById('p' + idx);
+    pill.textContent = v;
+    pill.className = 'score-pill ' + (v <= 4 ? 'low' : v <= 6 ? 'mid' : 'good');
+    const n = touches.size;
+    document.getElementById('prog-fill').style.width = Math.round(n / 11 * 100) + '%';
+    document.getElementById('prog-label').textContent = n + ' / 11 questions';
+    document.getElementById('prog-pct').textContent = Math.round(n / 11 * 100) + '%';
+  }
+
+  async function soumettre() {
+    const total = scores.reduce((a, b) => a + b, 0);
+    const moy = Math.round(total / scores.length * 10) / 10;
+
+    // ── Collecte des commentaires
+    const commentaires = {};
+    for (let i = 0; i <= 10; i++) {
+      const ta = document.getElementById('c' + i);
+      if (ta && ta.value.trim()) commentaires['q' + (i+1)] = ta.value.trim();
+    }
+
+    // ── Payload envoyé au webhook Make
+    const payload = {
+      email:    contactEmail,
+      prenom:   contactPrenom,
+      score_moyen: moy,
+      satisfait: moy >= 7,
+      scores: {
+        q1_correspondance:   scores[0],
+        q2_photos_amazon:    scores[1],
+        q3_design:           scores[2],
+        q4_qualite:          scores[3],
+        q5_facilite:         scores[4],
+        q6_guide_video:      scores[5],
+        q7_kine:             scores[6],
+        q8_resistances:      scores[7],
+        q9_resultats:        scores[8],
+        q10_recommandation:  scores[9],
+        q11_rapport_prix:    scores[10]
+      },
+      commentaires: commentaires,
+      date: new Date().toISOString()
+    };
+
+    // ── Envoi vers Make (remplace WEBHOOK_URL par ton URL Make)
+    try {
+      await fetch('https://hook.eu2.make.com/mujbw79eznxdxsi81uykstrdp6cyf5uv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch(e) {
+      console.warn('Webhook indisponible:', e);
+    }
+
+    // ── Affichage écran résultat
+    document.getElementById('form-zone').style.display = 'none';
+    const ecran = document.getElementById('ecran-resultat');
+    ecran.style.display = 'block';
+    const cercle = document.getElementById('cercle-score');
+    cercle.textContent = moy + '/10';
+
+    if (moy >= 7) {
+      cercle.className = 'result-cercle';
+      document.getElementById('result-titre').textContent = contactPrenom ? 'Merci ' + contactPrenom + ' !' : 'Merci pour votre retour !';
+      document.getElementById('result-msg').textContent = "Votre expérience positive est exactement ce qui nous motive. Si vous avez 60 secondes, un avis Amazon aide énormément d'autres sportifs à faire le bon choix.";
+      document.getElementById('result-cta').innerHTML = '<a class="btn-amazon" href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank">Laisser un avis sur Amazon ★</a>';
+    } else {
+      cercle.className = 'result-cercle bas';
+      document.getElementById('result-titre').textContent = 'Merci pour votre sincérité.';
+      document.getElementById('result-msg').textContent = "Votre retour nous est précieux pour nous améliorer. Écrivez-nous directement sur WhatsApp — nous trouverons une solution ensemble.";
+      document.getElementById('result-cta').innerHTML = '';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
