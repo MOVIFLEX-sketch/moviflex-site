@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Avis — MOVIFLEX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --vert: #1a6b4a;
+    --vert-clair: #e8f4ef;
+    --noir: #0f0f0f;
+    --gris-doux: #f5f5f3;
+    --gris-texte: #6b6b6b;
+    --blanc: #ffffff;
+    --bordure: #e0e0d8;
+    --rouge: #c0392b;
+    --orange: #e67e22;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Jost', sans-serif; font-weight: 300; background: var(--gris-doux); color: var(--noir); min-height: 100vh; }
+
+  header { background: var(--noir); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo-wrap { display: flex; align-items: center; gap: 14px; }
+  .logo-img { height: 32px; }
+  .header-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: rgba(255,255,255,0.7); font-weight: 400; }
+  .header-right { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; }
+
+  .main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 60px; }
+
+  /* MÉTRIQUES TOP */
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .metric-card { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 18px 20px; }
+  .metric-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gris-texte); margin-bottom: 8px; }
+  .metric-val { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; color: var(--noir); line-height: 1; }
+  .metric-val.vert { color: var(--vert); }
+  .metric-val.rouge { color: var(--rouge); }
+  .metric-sub { font-size: 11px; color: var(--gris-texte); margin-top: 4px; }
+
+  /* GRAPHIQUE RADAR */
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  @media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
+  .chart-card { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 22px; }
+  .card-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gris-texte); margin-bottom: 18px; font-weight: 500; }
+
+  /* TABLEAU */
+  .table-card { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; overflow: hidden; margin-bottom: 28px; }
+  .table-header { padding: 18px 22px; border-bottom: 1px solid var(--bordure); display: flex; align-items: center; justify-content: space-between; }
+  .table-header .card-title { margin: 0; }
+  .filter-row { display: flex; gap: 8px; }
+  .filter-btn { padding: 5px 12px; border: 1px solid var(--bordure); border-radius: 16px; font-size: 11px; font-family: 'Jost', sans-serif; cursor: pointer; background: none; color: var(--gris-texte); transition: all 0.15s; }
+  .filter-btn.active { background: var(--noir); color: #fff; border-color: var(--noir); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { padding: 10px 14px; text-align: left; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gris-texte); font-weight: 500; border-bottom: 1px solid var(--bordure); background: var(--gris-doux); }
+  tbody tr { border-bottom: 1px solid var(--bordure); transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--gris-doux); }
+  td { padding: 12px 14px; vertical-align: middle; color: var(--noir); }
+  td.muted { color: var(--gris-texte); }
+
+  .score-chip { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: 12px; font-weight: 500; color: #fff; }
+  .chip-good { background: var(--vert); }
+  .chip-mid { background: var(--orange); }
+  .chip-low { background: var(--rouge); }
+
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 500; }
+  .tag-ok { background: var(--vert-clair); color: var(--vert); }
+  .tag-ko { background: #fdecea; color: var(--rouge); }
+
+  /* BARRE SCORES PAR CRITÈRE */
+  .scores-card { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 22px; margin-bottom: 28px; }
+  .crit-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .crit-row:last-child { margin-bottom: 0; }
+  .crit-label { font-size: 12px; color: var(--noir); min-width: 220px; }
+  .crit-bar-wrap { flex: 1; height: 8px; background: var(--bordure); border-radius: 4px; overflow: hidden; }
+  .crit-bar { height: 100%; border-radius: 4px; background: var(--vert); transition: width 0.6s ease; }
+  .crit-bar.mid { background: var(--orange); }
+  .crit-bar.low { background: var(--rouge); }
+  .crit-score { font-size: 13px; font-weight: 500; min-width: 30px; text-align: right; color: var(--noir); }
+
+  /* VIDE */
+  .empty-state { text-align: center; padding: 60px 24px; color: var(--gris-texte); }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* BOUTON DEMO */
+  .demo-btn { padding: 8px 18px; background: var(--vert); color: #fff; border: none; border-radius: 8px; font-family: 'Jost', sans-serif; font-size: 12px; cursor: pointer; font-weight: 500; }
+  .demo-btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <img src="https://moviflex-sketch.github.io/moviflex-assets/images/logo-blanc.png" alt="Moviflex" class="logo-img" onerror="this.style.display='none'">
+    <span class="header-title">Dashboard Avis Clients</span>
+  </div>
+  <div class="header-right" id="last-update">Aucune donnée</div>
+</header>
+
+<div class="main">
+
+  <!-- MÉTRIQUES -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Total réponses</div>
+      <div class="metric-val" id="m-total">0</div>
+      <div class="metric-sub">formulaires soumis</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Score moyen global</div>
+      <div class="metric-val vert" id="m-moy">—</div>
+      <div class="metric-sub">sur 10</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Clients satisfaits</div>
+      <div class="metric-val vert" id="m-sat">—</div>
+      <div class="metric-sub">score ≥ 7/10</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Clients insatisfaits</div>
+      <div class="metric-val rouge" id="m-insat">—</div>
+      <div class="metric-sub">score &lt; 7/10</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Meilleur critère</div>
+      <div class="metric-val" id="m-best" style="font-size:18px; margin-top:4px;">—</div>
+      <div class="metric-sub" id="m-best-score"></div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">À améliorer</div>
+      <div class="metric-val rouge" id="m-worst" style="font-size:18px; margin-top:4px;">—</div>
+      <div class="metric-sub" id="m-worst-score"></div>
+    </div>
+  </div>
+
+  <!-- GRAPHIQUES -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="card-title">Profil des notes — Radar</div>
+      <canvas id="radarChart" height="260"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="card-title">Distribution des scores moyens</div>
+      <canvas id="barChart" height="260"></canvas>
+    </div>
+  </div>
+
+  <!-- BARRES PAR CRITÈRE -->
+  <div class="scores-card">
+    <div class="card-title" style="margin-bottom:20px;">Moyenne par critère</div>
+    <div id="crit-bars"></div>
+  </div>
+
+  <!-- TABLEAU DES RÉPONSES -->
+  <div class="table-card">
+    <div class="table-header">
+      <div class="card-title">Toutes les réponses</div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="filtrer('tous', this)">Tous</button>
+        <button class="filter-btn" onclick="filtrer('satisfait', this)">Satisfaits</button>
+        <button class="filter-btn" onclick="filtrer('insatisfait', this)">Insatisfaits</button>
+      </div>
+    </div>
+    <div id="table-wrap">
+      <div class="empty-state">
+        <div style="font-size:32px;">📋</div>
+        <p>Aucune réponse reçue pour l'instant.</p>
+        <p style="margin-top:12px;"><button class="demo-btn" onclick="chargerDemo()">Charger des données de démo</button></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CRITERES = [
+  { key: 'q1_correspondance',  label: 'Correspond aux attentes' },
+  { key: 'q2_photos_amazon',   label: 'Photos Amazon fidèles' },
+  { key: 'q3_design',          label: 'Design & esthétique' },
+  { key: 'q4_qualite',         label: 'Qualité des matériaux' },
+  { key: 'q5_facilite',        label: 'Facilité de prise en main' },
+  { key: 'q6_guide_video',     label: 'Guide vidéo' },
+  { key: 'q7_kine',            label: 'Crédibilité kiné' },
+  { key: 'q8_resistances',     label: 'Niveaux de résistance' },
+  { key: 'q9_resultats',       label: 'Résultats ressentis' },
+  { key: 'q10_recommandation', label: 'Recommandation' },
+  { key: 'q11_rapport_prix',   label: 'Rapport qualité/prix' }
+];
+
+let toutesReponses = [];
+let filtreActif = 'tous';
+let radarChart, barChartInst;
+
+// ── Chargement depuis localStorage (données envoyées par Make via postMessage ou ajout manuel)
+function chargerDonnees() {
+  try {
+    const raw = localStorage.getItem('moviflex_avis');
+    if (raw) toutesReponses = JSON.parse(raw);
+  } catch(e) {}
+  rafraichir();
+}
+
+function sauvegarder() {
+  localStorage.setItem('moviflex_avis', JSON.stringify(toutesReponses));
+}
+
+// ── Données de démo
+function chargerDemo() {
+  const prenoms = ['Marie', 'Thomas', 'Sophie', 'Lucas', 'Emma', 'Antoine', 'Julie', 'Maxime'];
+  toutesReponses = [];
+  for (let i = 0; i < 12; i++) {
+    const sat = Math.random() > 0.25;
+    const base = sat ? 7 : 4;
+    const scores = {};
+    CRITERES.forEach(c => { scores[c.key] = Math.min(10, Math.max(1, base + Math.round((Math.random()-0.3)*3))); });
+    const moy = Math.round(Object.values(scores).reduce((a,b)=>a+b,0) / 11 * 10) / 10;
+    toutesReponses.push({
+      prenom: prenoms[i % prenoms.length],
+      email: prenoms[i % prenoms.length].toLowerCase() + '@exemple.com',
+      score_moyen: moy,
+      satisfait: moy >= 7,
+      scores,
+      commentaires: {},
+      date: new Date(Date.now() - Math.random() * 7 * 86400000).toISOString()
+    });
+  }
+  sauvegarder();
+  rafraichir();
+}
+
+// ── Filtrage
+function filtrer(f, btn) {
+  filtreActif = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  afficherTableau();
+}
+
+// ── Rafraîchissement global
+function rafraichir() {
+  if (!toutesReponses.length) { reinitCharts(); return; }
+
+  const n = toutesReponses.length;
+  const moyGlob = Math.round(toutesReponses.reduce((a,r)=>a+r.score_moyen,0)/n * 10)/10;
+  const nbSat = toutesReponses.filter(r=>r.satisfait).length;
+  const nbInsat = n - nbSat;
+
+  document.getElementById('m-total').textContent = n;
+  document.getElementById('m-moy').textContent = moyGlob + '/10';
+  document.getElementById('m-sat').textContent = nbSat + ' (' + Math.round(nbSat/n*100) + '%)';
+  document.getElementById('m-insat').textContent = nbInsat + ' (' + Math.round(nbInsat/n*100) + '%)';
+
+  // Moyennes par critère
+  const moysCrit = CRITERES.map(c => {
+    const moy = Math.round(toutesReponses.reduce((a,r)=>a+(r.scores[c.key]||5),0)/n * 10)/10;
+    return { ...c, moy };
+  });
+
+  const best = moysCrit.reduce((a,b)=>b.moy>a.moy?b:a);
+  const worst = moysCrit.reduce((a,b)=>b.moy<a.moy?b:a);
+  document.getElementById('m-best').textContent = best.label;
+  document.getElementById('m-best-score').textContent = best.moy + '/10';
+  document.getElementById('m-worst').textContent = worst.label;
+  document.getElementById('m-worst-score').textContent = worst.moy + '/10';
+
+  document.getElementById('last-update').textContent = 'Mis à jour ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+  afficherBarresCriteres(moysCrit);
+  afficherRadar(moysCrit);
+  afficherBarChart();
+  afficherTableau();
+}
+
+// ── Barres critères
+function afficherBarresCriteres(moysCrit) {
+  const wrap = document.getElementById('crit-bars');
+  wrap.innerHTML = moysCrit.sort((a,b)=>b.moy-a.moy).map(c => {
+    const cls = c.moy >= 7 ? '' : c.moy >= 5 ? 'mid' : 'low';
+    return `<div class="crit-row">
+      <div class="crit-label">${c.label}</div>
+      <div class="crit-bar-wrap"><div class="crit-bar ${cls}" style="width:${c.moy*10}%"></div></div>
+      <div class="crit-score">${c.moy}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Radar
+function afficherRadar(moysCrit) {
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  if (radarChart) radarChart.destroy();
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: moysCrit.map(c => c.label.length > 18 ? c.label.substring(0,18)+'…' : c.label),
+      datasets: [{
+        data: moysCrit.map(c => c.moy),
+        backgroundColor: 'rgba(26,107,74,0.1)',
+        borderColor: '#1a6b4a',
+        borderWidth: 2,
+        pointBackgroundColor: '#1a6b4a',
+        pointRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, font: { size: 10 } }, pointLabels: { font: { size: 10, family: 'Jost' } } } }
+    }
+  });
+}
+
+// ── Bar Chart distribution
+function afficherBarChart() {
+  const ctx = document.getElementById('barChart').getContext('2d');
+  if (barChartInst) barChartInst.destroy();
+  const buckets = [0,0,0,0,0,0,0,0,0,0];
+  toutesReponses.forEach(r => {
+    const idx = Math.min(9, Math.max(0, Math.floor(r.score_moyen) - 1));
+    buckets[idx]++;
+  });
+  barChartInst = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['1','2','3','4','5','6','7','8','9','10'],
+      datasets: [{
+        data: buckets,
+        backgroundColor: buckets.map((_,i) => i >= 6 ? '#1a6b4a' : i >= 4 ? '#e67e22' : '#c0392b'),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { stepSize: 1, font: { size: 10 } }, grid: { color: '#f0f0ec' } },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ── Tableau
+function afficherTableau() {
+  const wrap = document.getElementById('table-wrap');
+  let data = toutesReponses;
+  if (filtreActif === 'satisfait') data = data.filter(r => r.satisfait);
+  if (filtreActif === 'insatisfait') data = data.filter(r => !r.satisfait);
+  data = [...data].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+  if (!data.length) {
+    wrap.innerHTML = '<div class="empty-state"><p>Aucune réponse dans ce filtre.</p></div>';
+    return;
+  }
+
+  const rows = data.map(r => {
+    const chip = r.score_moyen >= 7 ? 'chip-good' : r.score_moyen >= 5 ? 'chip-mid' : 'chip-low';
+    const tag = r.satisfait ? '<span class="tag tag-ok">Satisfait</span>' : '<span class="tag tag-ko">Insatisfait</span>';
+    const scores = CRITERES.map(c => `<td class="muted" style="text-align:center">${r.scores[c.key] || '—'}</td>`).join('');
+    const date = new Date(r.date).toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit'});
+    return `<tr>
+      <td><strong>${r.prenom || '—'}</strong><br><span style="font-size:10px;color:var(--gris-texte)">${r.email || ''}</span></td>
+      <td><div class="score-chip ${chip}">${r.score_moyen}</div></td>
+      <td>${tag}</td>
+      ${scores}
+      <td class="muted" style="font-size:10px;white-space:nowrap">${date}</td>
+    </tr>`;
+  }).join('');
+
+  const headers = CRITERES.map(c => `<th style="white-space:nowrap">${c.label.substring(0,14)}…</th>`).join('');
+
+  wrap.innerHTML = `<div style="overflow-x:auto"><table>
+    <thead><tr>
+      <th>Client</th><th>Score</th><th>Statut</th>
+      ${headers}
+      <th>Date</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
+}
+
+function reinitCharts() {
+  document.getElementById('m-total').textContent = '0';
+  ['m-moy','m-sat','m-insat','m-best','m-worst'].forEach(id => document.getElementById(id).textContent = '—');
+  document.getElementById('crit-bars').innerHTML = '';
+}
+
+// ── Réception des données depuis Make via postMessage (optionnel)
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'nouvelle_reponse') {
+    toutesReponses.push(e.data.payload);
+    sauvegarder();
+    rafraichir();
+  }
+});
+
+// ── API publique pour Make (appelée via URL param ?data=...)
+const urlData = new URLSearchParams(window.location.search).get('data');
+if (urlData) {
+  try {
+    const parsed = JSON.parse(decodeURIComponent(urlData));
+    toutesReponses.push(parsed);
+    sauvegarder();
+  } catch(e) {}
+}
+
+chargerDonnees();
+</script>
+</body>
+</html>
