@@ -109,6 +109,18 @@
   .social-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
   .footer-copy { font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 20px; letter-spacing: 1px; }
 
+  /* CHAMPS IDENTITÉ */
+  .identite-card { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 22px 20px 18px; margin-bottom: 12px; }
+  .identite-titre { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gris-texte); font-weight: 500; margin-bottom: 14px; }
+  .identite-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .identite-grid .full { grid-column: 1 / -1; }
+  .field-wrap { display: flex; flex-direction: column; gap: 5px; }
+  .field-wrap label { font-size: 11px; color: var(--gris-texte); font-weight: 400; }
+  .field-wrap input { border: 1px solid var(--bordure); border-radius: 8px; padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300; color: var(--noir); background: var(--gris-doux); outline: none; transition: border-color 0.2s; }
+  .field-wrap input:focus { border-color: var(--vert); background: var(--blanc); }
+  .field-wrap input::placeholder { color: #bbb; }
+  .field-wrap input.error { border-color: #c0392b; }
+
   @media (max-width: 480px) {
     .intro-titre { font-size: 24px; }
     .q-text { font-size: 13px; }
@@ -148,6 +160,25 @@
 <div class="form-wrap" id="form-zone">
 
   <!-- MACRO pour chaque question : slider + toggle commentaire -->
+
+  <!-- IDENTITÉ -->
+  <div class="identite-card">
+    <div class="identite-titre">Vos informations</div>
+    <div class="identite-grid">
+      <div class="field-wrap">
+        <label for="inp-prenom">Prénom *</label>
+        <input type="text" id="inp-prenom" placeholder="Votre prénom" autocomplete="given-name">
+      </div>
+      <div class="field-wrap">
+        <label for="inp-nom">Nom *</label>
+        <input type="text" id="inp-nom" placeholder="Votre nom" autocomplete="family-name">
+      </div>
+      <div class="field-wrap full">
+        <label for="inp-email">Email *</label>
+        <input type="email" id="inp-email" placeholder="votre@email.com" autocomplete="email">
+      </div>
+    </div>
+  </div>
 
   <!-- Q1 -->
   <div class="q-card">
@@ -378,6 +409,27 @@
   }
 
   async function soumettre() {
+    // ── Lecture des champs identité (priorité aux champs saisis, fallback URL)
+    const prenomSaisi = document.getElementById('inp-prenom').value.trim();
+    const nomSaisi    = document.getElementById('inp-nom').value.trim();
+    const emailSaisi  = document.getElementById('inp-email').value.trim();
+
+    // Validation
+    let ok = true;
+    ['inp-prenom','inp-nom','inp-email'].forEach(id => {
+      document.getElementById(id).classList.remove('error');
+    });
+    if (!prenomSaisi) { document.getElementById('inp-prenom').classList.add('error'); ok = false; }
+    if (!nomSaisi)    { document.getElementById('inp-nom').classList.add('error');    ok = false; }
+    if (!emailSaisi || !emailSaisi.includes('@')) { document.getElementById('inp-email').classList.add('error'); ok = false; }
+    if (!ok) {
+      document.getElementById('inp-prenom').closest('.identite-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const prenomFinal = prenomSaisi || contactPrenom;
+    const emailFinal  = emailSaisi  || contactEmail;
+
     const total = scores.reduce((a, b) => a + b, 0);
     const moy = Math.round(total / scores.length * 10) / 10;
 
@@ -390,8 +442,9 @@
 
     // ── Payload envoyé au webhook Make
     const payload = {
-      email:    contactEmail,
-      prenom:   contactPrenom,
+      email:    emailFinal,
+      prenom:   prenomFinal,
+      nom:      nomSaisi,
       score_moyen: moy,
       satisfait: moy >= 7,
       scores: {
@@ -431,7 +484,7 @@
 
     if (moy >= 7) {
       cercle.className = 'result-cercle';
-      document.getElementById('result-titre').textContent = contactPrenom ? 'Merci ' + contactPrenom + ' !' : 'Merci pour votre retour !';
+      document.getElementById('result-titre').textContent = prenomFinal ? 'Merci ' + prenomFinal + ' !' : 'Merci pour votre retour !';
       document.getElementById('result-msg').textContent = "Votre expérience positive est exactement ce qui nous motive. Si vous avez 60 secondes, un avis Amazon aide énormément d'autres sportifs à faire le bon choix.";
       document.getElementById('result-cta').innerHTML = '<a class="btn-amazon" href="https://www.amazon.fr/Moviflex-%C3%89lastiques-Musculation-Fitness-Sport/dp/B0GFQ8NP7F" target="_blank">Laisser un avis sur Amazon ★</a>';
     } else {
