@@ -312,6 +312,13 @@
     </div>
   </div>
 
+  <!-- CONCLUSION -->
+  <div class="q-card">
+    <div class="q-meta"><div class="q-num-badge" style="background:#1a6b4a;">✦</div><span class="q-categorie">Pour conclure</span></div>
+    <p class="q-text">Si vous deviez améliorer une seule chose sur le kit Moviflex, ce serait quoi ?</p>
+    <textarea id="conclusion" rows="3" placeholder="Votre réponse (optionnelle)…" style="width:100%; border:1px solid #e0e0d8; border-radius:8px; padding:10px 12px; font-family:'Jost',sans-serif; font-size:13px; font-weight:300; color:#0f0f0f; background:#f5f5f3; resize:none; outline:none; transition:border-color 0.2s; line-height:1.5;" onfocus="this.style.borderColor='#1a6b4a'; this.style.background='#fff';" onblur="this.style.borderColor='#e0e0d8'; this.style.background='#f5f5f3';"></textarea>
+  </div>
+
   <div class="submit-wrap">
     <button class="btn-submit" onclick="soumettre()">Envoyer mon avis →</button>
   </div>
@@ -461,6 +468,7 @@
         q11_rapport_prix:    scores[10]
       },
       commentaires: commentaires,
+      conclusion: document.getElementById('conclusion').value.trim(),
       date: new Date().toISOString()
     };
 
