@@ -4,3 +4,8 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+[[redirects]]
+  from = "/app/*"
+  to = "https://moviflex-app.netlify.app/:splat"
+  status = 200
+  force = true
