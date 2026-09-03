@@ -1,0 +1,36 @@
+---
+layout: base.njk
+title: "Blog — Conseils de kinésithérapeute | MOVIFLEX"
+description: "Conseils, exercices et programmes signés par un kinésithérapeute : mobilité, renforcement musculaire, gestion des douleurs. Par MOVIFLEX."
+keywords: "blog kinésithérapeute, conseils exercices, mobilité, renforcement musculaire"
+ogImage: "https://moviflex-sketch.github.io/moviflex-assets/images/logo-blanc.png"
+permalink: /blog/
+---
+
+<section aria-label="Blog MOVIFLEX">
+  <div class="hero-banner" style="min-height:auto;">
+    <img class="hero-banner-img" src="https://moviflex-sketch.github.io/moviflex-assets/images/fond.png" alt="Blog MOVIFLEX" loading="eager" fetchpriority="high" />
+    <div class="hero-banner-overlay" aria-hidden="true"></div>
+    <div class="hero-banner-content" style="padding-top:130px;padding-bottom:80px;">
+      <h1 class="hero-title" style="font-size:clamp(30px,4vw,44px);">Le blog <em>MOVIFLEX</em></h1>
+      <p class="hero-subtitle">Conseils, exercices et programmes, écrits par un kinésithérapeute.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0 80px;">
+  <div class="container">
+    <div class="blog-grid">
+      {% for post in collections.posts %}
+      <a href="{{ post.url }}" class="blog-card">
+        <img src="{{ post.data.coverImage }}" alt="{{ post.data.coverAlt }}" loading="lazy" />
+        <div class="blog-card-body">
+          <p class="blog-card-cat">{{ post.data.category }}</p>
+          <p class="blog-card-title">{{ post.data.title }}</p>
+          <p class="blog-card-excerpt">{{ post.data.excerpt }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>

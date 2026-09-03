@@ -1,0 +1,12 @@
+{
+  "name": "moviflex-site",
+  "version": "1.0.0",
+  "description": "Site vitrine MOVIFLEX — généré avec Eleventy",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}
