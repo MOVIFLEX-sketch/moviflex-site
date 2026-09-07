@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /app
 
-Sitemap: https://www.moviflex13.com/sitemap.xml
+Sitemap: https://moviflex13.com/sitemap.xml
