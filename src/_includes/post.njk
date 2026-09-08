@@ -1,17 +1,22 @@
 ---
 layout: base.njk
+widgetUrl: "/kit-elastiques/"
+widgetImage: "https://moviflex-sketch.github.io/moviflex-assets/images/1.png"
+widgetLabel: "Kit Élastiques MOVIFLEX"
+widgetBtn: "Voir le Kit"
+ctaImage: "https://moviflex-sketch.github.io/moviflex-assets/images/1.png"
 ---
 <!-- Widget flottant produit (grand écran uniquement) -->
-<a href="/kit-elastiques/" class="sidebar-widget" aria-label="Voir le Kit Élastiques MOVIFLEX">
-  <img src="https://moviflex-sketch.github.io/moviflex-assets/images/1.png" alt="Kit Élastiques MOVIFLEX" />
-  <span class="sidebar-widget-btn">Voir le Kit</span>
+<a href="{{ widgetUrl }}" class="sidebar-widget" aria-label="{{ widgetLabel }}">
+  <img src="{{ widgetImage }}" alt="{{ widgetLabel }}" />
+  <span class="sidebar-widget-btn">{{ widgetBtn }}</span>
 </a>
 
 <!-- Barre collante en bas (mobile/tablette uniquement) -->
-<a href="/kit-elastiques/" class="sticky-bottom-bar" aria-label="Voir le Kit Élastiques MOVIFLEX">
-  <img src="https://moviflex-sketch.github.io/moviflex-assets/images/1.png" alt="Kit Élastiques MOVIFLEX" />
-  <span class="sticky-bottom-bar-text">Kit Élastiques MOVIFLEX</span>
-  <span class="sticky-bottom-bar-btn">Voir le Kit</span>
+<a href="{{ widgetUrl }}" class="sticky-bottom-bar" aria-label="{{ widgetLabel }}">
+  <img src="{{ widgetImage }}" alt="{{ widgetLabel }}" />
+  <span class="sticky-bottom-bar-text">{{ widgetLabel }}</span>
+  <span class="sticky-bottom-bar-btn">{{ widgetBtn }}</span>
 </a>
 
 <!-- ─── HERO ─── -->
@@ -68,11 +73,14 @@ layout: base.njk
 <section class="cta-section" aria-label="{{ ctaTitle }}">
   <div class="cta-bg" aria-hidden="true"></div>
   <div class="container cta-inner">
-    <img src="https://moviflex-sketch.github.io/moviflex-assets/images/1.png" alt="Kit Élastiques MOVIFLEX" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto 20px;display:block;" loading="lazy" />
+    <img src="{{ ctaImage }}" alt="{{ ctaButton }}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto 20px;display:block;" loading="lazy" />
     <h2 class="cta-title reveal" style="font-size:clamp(24px,3vw,34px);">{{ ctaTitle }}</h2>
     <p class="cta-subtitle reveal reveal-delay-1">{{ ctaText }}</p>
     <div class="cta-btns reveal reveal-delay-2">
       <a href="{{ ctaUrl }}" class="btn btn-amazon">{{ ctaButton }}</a>
+      {% if ctaSecondUrl %}
+      <a href="{{ ctaSecondUrl }}" class="btn btn-amazon">{{ ctaSecondButton }}</a>
+      {% endif %}
     </div>
   </div>
 </section>
